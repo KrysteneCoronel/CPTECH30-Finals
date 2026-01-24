@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KLIKSY Feed</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { box-sizing: border-box; margin:0; padding:0; font-family: 'Poppins', sans-serif; }
+
+    body {
+      background: linear-gradient(135deg, #0a0e27 0%, #1a0b2e 50%, #160b28 100%);
+      min-height: 100vh;
+      width: 100vw;
+      overflow-x: hidden;
+      position: relative;
+      color: #FFFFFF;
+    }
+
+    /* Animated gradient orbs */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.5;
+      animation: float 15s ease-in-out infinite;
+      z-index: 0;
+    }
+    
+    .orb1 {
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, #FF6B6B 0%, transparent 70%);
+      top: -150px;
+      right: -150px;
+      animation-delay: 0s;
+    }
+    
+    .orb2 {
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, #4ECDC4 0%, transparent 70%);
+      bottom: 100px;
+      left: -200px;
+      animation-delay: 5s;
+    }
+    
+    .orb3 {
+      width: 450px;
+      height: 450px;
+      background: radial-gradient(circle, #FFE66D 0%, transparent 70%);
+      top: 40%;
+      right: 15%;
+      animation-delay: 10s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(40px, -60px) scale(1.15); }
+      66% { transform: translate(-30px, 40px) scale(0.85); }
+    }
+
+    /* Logo */
+    .logo {
+      position: relative;
+      display: flex;
+      gap: 4px;
+      font-size: 36px;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      z-index: 10;
+      color: #FFFFFF;
+      text-transform: uppercase;
+    }
+    .logo-dot { 
+      color: #FF6B6B;
+      filter: drop-shadow(0 0 15px rgba(255, 107, 107, 0.8));
+      animation: pulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+
+    /* Navigation */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 14, 39, 0.8);
+      padding: 16px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(20px);
+      border-bottom: 2px solid rgba(255, 107, 107, 0.2);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+    
+    .nav-links a {
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.7);
+      padding: 10px 20px;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+    }
+    
+    .nav-links a.active { 
+      color: #FFFFFF;
+      background: linear-gradient(135deg, rgba(255, 107, 107, 0.3) 0%, rgba(78, 205, 196, 0.3) 100%);
+      box-shadow: 0 0 20px rgba(255, 107, 107, 0.4);
+    }
+    
+    .nav-links a:hover { 
+      color: #FFFFFF;
+      background: rgba(255, 107, 107, 0.2);
+      transform: translateY(-2px);
+    }
+
+    /* Logout button */
+    .logout-btn {
+      background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+      padding: 10px 24px;
+      border-radius: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(255, 107, 107, 0.5);
+      border: none;
+      color: white;
+      cursor: pointer;
+      text-transform: uppercase;
+      font-size: 13px;
+      letter-spacing: 0.05em;
+    }
+    .logout-btn:hover { 
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 6px 25px rgba(255, 107, 107, 0.7);
+    }
+
+    main {
+      position: relative;
+      z-index: 5;
+      padding-top: 60px;
+      padding-bottom: 80px;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding-left: 32px;
+      padding-right: 32px;
+    }
+
+    /* Feed Hero */
+    .feed-hero {
+      font-size: 72px;
+      font-weight: 900;
+      line-height: 1;
+      background: linear-gradient(135deg, #FFFFFF 0%, #FFE66D 40%, #FF6B6B 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+      text-align: center;
+      filter: drop-shadow(0 0 40px rgba(255, 230, 109, 0.4));
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+    }
+
+    p.subtitle { 
+      color: rgba(255, 255, 255, 0.7); 
+      margin-bottom: 48px; 
+      text-align: center;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    /* Meme cards */
+    .meme-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      color: #FFFFFF;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      position: relative;
+    }
+    
+    .meme-card:hover { 
+      border-color: rgba(255, 107, 107, 0.5);
+    }
+
+    .meme-card img { 
+      width: 100%; 
+      height: 300px; 
+      object-fit: cover;
+      position: relative;
+      z-index: 1;
+    }
+
+    .meme-card .info { 
+      padding: 16px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .meme-card .user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    
+    .meme-card .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      font-weight: 700;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #FF6B6B 0%, #4ECDC4 100%);
+      box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+      color: white;
+    }
+    
+    .meme-card .user span {
+      font-weight: 600;
+      color: #FFFFFF;
+      font-size: 14px;
+    }
+    
+    .meme-card .description { 
+      font-size: 14px; 
+      color: rgba(255, 255, 255, 0.9);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+    
+    .meme-card .reactions {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+    
+    .meme-card .reaction-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 20px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: rgba(255, 255, 255, 0.6);
+    }
+    
+    .meme-card .reaction-btn span {
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.8);
+    }
+    
+    .meme-card .reaction-btn:hover {
+      transform: scale(1.2);
+    }
+    
+    .meme-card .timestamp { 
+      font-size: 11px; 
+      color: rgba(255, 255, 255, 0.4);
+      margin-left: auto;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    /* Load more button */
+    .load-more {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #FF6B6B 0%, #FFE66D 100%);
+      padding: 16px 40px;
+      border-radius: 50px;
+      font-weight: 800;
+      margin-top: 60px;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 30px rgba(255, 107, 107, 0.4);
+      border: none;
+      color: #0a0e27;
+      cursor: pointer;
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .load-more:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(255, 230, 109, 0.6);
+    }
+
+    /* Pagination */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 60px;
+    }
+
+    .page-btn {
+      padding: 10px 14px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .page-btn:hover {
+      background: rgba(255, 107, 107, 0.2);
+      border-color: #FF6B6B;
+      color: #FFFFFF;
+    }
+
+    .page-btn.active {
+      background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+      border-color: #FF6B6B;
+      color: #FFFFFF;
+      box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+    }
+
+    .prev-btn, .next-btn {
+      padding: 10px 12px;
+    }
+
+    /* Page container */
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: grid;
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    @media (min-width: 640px) {
+      .page.active {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .page.active {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (min-width: 1280px) {
+      .page.active {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
+    /* Photo Modal */
+    #photoModal {
+      background: rgba(10, 14, 39, 0.95);
+      backdrop-filter: blur(10px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      padding: 24px;
+      overflow-y: auto;
+    }
+    #photoModal.hidden { display: none; }
+
+    #photoModal .modal-content {
+      display: flex;
+      flex-direction: column;
+      max-width: 700px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border-radius: 24px;
+      overflow: hidden;
+      max-height: 90vh;
+      overflow-y: auto;
+      border: 2px solid rgba(255, 107, 107, 0.3);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      position: relative;
+    }
+    
+    #photoModal .modal-header {
+      padding: 20px 24px;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    
+    #photoModal .modal-header-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #FF6B6B 0%, #4ECDC4 100%);
+      box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+      color: white;
+    }
+    
+    #photoModal .modal-header-info h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin: 0;
+    }
+    
+    #photoModal .modal-header-info p {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.5);
+      margin: 0;
+    }
+    
+    #photoModal img { 
+      width: 100%; 
+      max-height: 500px;
+      object-fit: contain;
+      background: rgba(0, 0, 0, 0.3);
+    }
+    
+    #photoModal .modal-info { 
+      padding: 24px;
+      color: #FFFFFF;
+    }
+    
+    #photoModal .modal-description {
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.9);
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+    
+    #photoModal .modal-reactions {
+      display: flex;
+      gap: 24px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    #photoModal .modal-reaction-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 24px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: rgba(255, 255, 255, 0.6);
+    }
+    
+    #photoModal .modal-reaction-btn span {
+      font-size: 16px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.8);
+    }
+    
+    #photoModal .modal-reaction-btn:hover {
+      transform: scale(1.15);
+      color: rgba(255, 255, 255, 1);
+    }
+    
+    #photoModal .close-btn { 
+      position: absolute; 
+      top: 20px; 
+      right: 20px; 
+      font-size: 32px; 
+      background: rgba(255, 107, 107, 0.9);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      cursor: pointer; 
+      color: #fff;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      z-index: 10;
+      font-weight: 700;
+    }
+
+    #photoModal .close-btn:hover {
+      background: rgba(255, 107, 107, 1);
+    }
+
+    /* Utility classes */
+    .flex { display: flex; }
+    .items-center { align-items: center; }
+    .gap-2 { gap: 8px; }
+    .gap-6 { gap: 24px; }
+    .text-center { text-align: center; }
+    .grid { display: grid; }
+    .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+    .gap-6 { gap: 24px; }
+    
+    @media (min-width: 640px) {
+      .sm-grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    
+    @media (min-width: 1024px) {
+      .lg-grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+    
+    @media (min-width: 1280px) {
+      .xl-grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Animated gradient orbs -->
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="logo">
+      <span class="logo-text">KLIKSY</span><span class="logo-dot">.</span>
+    </div>
+    <div class="flex items-center gap-6">
+      <div class="nav-links flex gap-2">
+        <a href="feed.html" class="active">Feed</a>
+        <a href="upload.html">Upload</a>
+        <a href="profile.html">Profile</a>
+      </div>
+      <button class="logout-btn" onclick="window.location.href='login.html'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </div>
+  </nav>
+
+  <main>
+    <h1 class="feed-hero">Where Memes Live</h1>
+    <p class="subtitle">🔥 The Internet's Funniest Moments, All In One Place 🔥</p>
+
+    <!-- Page 1 -->
+    <div class="page active" data-page="1">
+      <div class="meme-card">
+        <img src="https://meme-dev-v2.s3.eu-west-1.amazonaws.com/uploads/2020/12/12/1607804567339-13117/_versions/684a37d81cce179f54866420d08a81f8-384.jpg" alt="Mountain Landscape">
+        <div class="info">
+          <div class="user">
+            <div class="avatar">J</div>
+            <span>john_doe</span>
+          </div>
+          <p class="description">When the mountain finally loads after buffering for 10 mins 😂</p>
+          <div class="reactions">
+            <div class="reaction-btn">😂 <span>1.2K</span></div>
+            <div class="timestamp">2h ago</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="meme-card">
+        <img src="https://images.unsplash.com/photo-1674981959759-b6d2f9657f64?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Cat">
+        <div class="info">
+          <div class="user">
+            <div class="avatar">S</div>
+            <span>sarah_pets</span>
+          </div>
+          <p class="description">POV: You forgot to feed your cat for 5 minutes 😺</p>
+          <div class="reactions">
+            <div class="reaction-btn">😂 <span>3.4K</span></div>
+            <div class="timestamp">5h ago</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="meme-card">
+        <img src="https://meme-dev.s3.eu-west-1.amazonaws.com/uploads/2020/12/12/1607795389653-13117/86A24EFA-5906-49B2-B6DD-9A3B9370E387.jpeg" alt="Food">
+        <div class="info">
+          <div class="user">
+            <div class="avatar">M</div>
+            <span>mike_foodie</span>
+          </div>
+          <p class="description">Me pretending I can cook after watching 1 TikTok recipe 🍝</p>
+          <div class="reactions">
+            <div class="reaction-btn">😂 <span>5.6K</span></div>
+            <div class="timestamp">1d ago</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="meme-card">
+        <img src="https://pbs.twimg.com/media/GRLbF0iXEAINXPj?format=jpg&name=900x900" alt="Nature">
+        <div class="info">
+          <div class="user">
+            <div class="avatar">A</div>
+            <span>alex_nature</span>
+          </div>
+          <p class="description">Windows XP wallpaper hit different back in the day 🌅</p>
+          <div class="reactions">
+            <div class="reaction-btn">😂 <span>2.8K</span></div>
+            <div class="timestamp">2d ago</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="meme-card">
+        <img src="https://meme-dev-v2.s3.eu-west-1.amazonaws.com/uploads/2020/12/12/1607804567339-13117/_versions/684a37d81cce179f54866420d08a81f8-384.jpg" alt="Mountain Landscape">
+        <div class="info">
+          <div class="user">
+            <div class="avatar">J</div>
+            <span>john_doe</span>
+          </div>
+          <p class="description">When the mountain finally loads after buffering for 10 mins 😂</p>
+          <div class="reactions">
+            <div class="reaction-btn">😂 <span>1.2K</span></div>
+            <div class="timestamp">2h ago</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="meme-card">
+        <img src="https://images.unsplash.com/photo-1674981959759-b6d2f9657f64?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Cat">
+        <div class="info">
+          <div class="user">
+            <div class="avatar">S</div>
+            <span>sarah_pets</span>
+          </div>
+          <p class="description">POV: You forgot to feed your cat for 5 minutes 😺</p>
+          <div class="reactions">
+            <div class="reaction-btn">😂 <span>3.4K</span></div>
+            <div class="timestamp">5h ago</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="meme-card">
+        <img src="https://meme-dev.s3.eu-west-1.amazonaws.com/uploads/2020/12/12/1607795389653-13117/86A24EFA-5906-49B2-B6DD-9A3B9370E387.jpeg" alt="Food">
+        <div class="info">
+          <div class="user">
+            <div class="avatar">M</div>
+            <span>mike_foodie</span>
+          </div>
+          <p class="description">Me pretending I can cook after watching 1 TikTok recipe 🍝</p>
+          <div class="reactions">
+            <div class="reaction-btn">😂 <span>5.6K</span></div>
+            <div class="timestamp">1d ago</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="meme-card">
+        <img src="https://pbs.twimg.com/media/GRLbF0iXEAINXPj?format=jpg&name=900x900" alt="Nature">
+        <div class="info">
+          <div class="user">
+            <div class="avatar">A</div>
+            <span>alex_nature</span>
+          </div>
+          <p class="description">Windows XP wallpaper hit different back in the day 🌅</p>
+          <div class="reactions">
+            <div class="reaction-btn">😂 <span>2.8K</span></div>
+            <div class="timestamp">2d ago</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Page 2 -->
+    <div class="page" data-page="2">
+      <div class="meme-card">
+        <img src="https://meme-dev-v2.s3.eu-west-1.amazonaws.com/uploads/2020/12/12/1607804567339-13117/_versions/684a37d81cce179f54866420d08a81f8-384.jpg" alt="Mountain Landscape">
+        <div class="info">
+          <div class="user">
+            <div class="avatar">J</div>
+            <span>john_doe</span>
+          </div>
+          <p class="description">When the mountain finally loads after buffering for 10 mins 😂</p>
+          <div class="reactions">
+            <div class="reaction-btn">😂 <span>1.2K</span></div>
+            <div class="timestamp">2h ago</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="meme-card">
+        <img src="https://images.unsplash.com/photo-1674981959759-b6d2f9657f64?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Cat">
+        <div class="info">
+          <div class="user">
+            <div class="avatar">S</div>
+            <span>sarah_pets</span>
+          </div>
+          <p class="description">POV: You forgot to feed your cat for 5 minutes 😺</p>
+          <div class="reactions">
+            <div class="reaction-btn">😂 <span>3.4K</span></div>
+            <div class="timestamp">5h ago</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="meme-card">
+        <img src="https://meme-dev.s3.eu-west-1.amazonaws.com/uploads/2020/12/12/1607795389653-13117/86A24EFA-5906-49B2-B6DD-9A3B9370E387.jpeg" alt="Food">
+        <div class="info">
+          <div class="user">
+            <div class="avatar">M</div>
+            <span>mike_foodie</span>
+          </div>
+          <p class="description">Me pretending I can cook after watching 1 TikTok recipe 🍝</p>
+          <div class="reactions">
+            <div class="reaction-btn">😂 <span>5.6K</span></div>
+            <div class="timestamp">1d ago</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="meme-card">
+        <img src="https://pbs.twimg.com/media/GRLbF0iXEAINXPj?format=jpg&name=900x900" alt="Nature">
+        <div class="info">
+          <div class="user">
+            <div class="avatar">A</div>
+            <span>alex_nature</span>
+          </div>
+          <p class="description">Windows XP wallpaper hit different back in the day 🌅</p>
+          <div class="reactions">
+            <div class="reaction-btn">😂 <span>2.8K</span></div>
+            <div class="timestamp">2d ago</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+      <button class="page-btn prev-btn"><i class="fas fa-chevron-left"></i></button>
+      <button class="page-btn active" data-page="1">1</button>
+      <button class="page-btn" data-page="2">2</button>
+      <button class="page-btn next-btn"><i class="fas fa-chevron-right"></i></button>
+    </div>
+  </main>
+
+  <!-- Photo Modal -->
+  <div id="photoModal" class="hidden">
+    <button class="close-btn">&times;</button>
+    <div class="modal-content">
+      <!-- Header with user info -->
+      <div class="modal-header">
+        <div class="modal-header-avatar" id="modalHeaderAvatar"></div>
+        <div class="modal-header-info">
+          <h3 id="modalHeaderUsername"></h3>
+          <p id="modalHeaderTimestamp"></p>
+        </div>
+      </div>
+      
+      <!-- Image -->
+      <img id="modalImage" src="" alt="">
+      
+      <!-- Description and reactions -->
+      <div class="modal-info">
+        <p class="modal-description" id="modalDescription"></p>
+        <div class="modal-reactions">
+          <div class="modal-reaction-btn">😂 <span>1.2K</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Pagination functionality
+    let currentPage = 1;
+    const totalPages = 2;
+
+    function showPage(page) {
+      if (page < 1 || page > totalPages) return;
+      
+      currentPage = page;
+      
+      // Hide all pages
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      
+      // Show current page
+      document.querySelector(`.page[data-page="${page}"]`).classList.add('active');
+      
+      // Update active button
+      document.querySelectorAll('.page-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.page === String(page)) {
+          btn.classList.add('active');
+        }
+      });      
+      // Scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });      
+      // Scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Pagination button click handlers
+    document.querySelectorAll('.page-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (btn.classList.contains('prev-btn')) {
+          showPage(currentPage - 1);
+        } else if (btn.classList.contains('next-btn')) {
+          showPage(currentPage + 1);
+        } else {
+          showPage(parseInt(btn.dataset.page));
+        }
+      });
+    });
+
+    // Photo modal functionality
+    const photoModal = document.getElementById('photoModal');
+    const modalImage = document.getElementById('modalImage');
+    const modalHeaderUsername = document.getElementById('modalHeaderUsername');
+    const modalHeaderAvatar = document.getElementById('modalHeaderAvatar');
+    const modalHeaderTimestamp = document.getElementById('modalHeaderTimestamp');
+    const modalDescription = document.getElementById('modalDescription');
+    const closeModal = photoModal.querySelector('.close-btn');
+
+    function attachCardListeners() {
+      document.querySelectorAll('.meme-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const img = card.querySelector('img');
+          const user = card.querySelector('.user span');
+          const avatar = card.querySelector('.avatar');
+          const desc = card.querySelector('.description');
+          const time = card.querySelector('.timestamp');
+
+          modalImage.src = img.src;
+          modalImage.alt = img.alt;
+          modalHeaderUsername.textContent = user.textContent;
+          modalHeaderAvatar.textContent = avatar.textContent;
+          modalHeaderAvatar.style.background = avatar.style.background || 'linear-gradient(135deg, #FF6B6B 0%, #4ECDC4 100%)';
+          modalHeaderTimestamp.textContent = time.textContent;
+          modalDescription.textContent = desc.textContent;
+          photoModal.classList.remove('hidden');
+          document.body.style.overflow = 'hidden';
+        });
+      });
+    }
+
+    closeModal.addEventListener('click', () => {
+      photoModal.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    });
+
+    photoModal.addEventListener('click', e => {
+      if(e.target === photoModal) {
+        photoModal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+      }
+    });
+
+    document.addEventListener('keydown', e => {
+      if(e.key === 'Escape') {
+        photoModal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+      }
+    });
+
+    // Initialize card listeners
+    attachCardListeners();
+  </script>
+
+</body>
+</html>

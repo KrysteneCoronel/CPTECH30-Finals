@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KLIKSY Sign Up</title>
+  <!-- Poppins Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { box-sizing: border-box; margin:0; padding:0; font-family: 'Poppins', sans-serif; }
+
+    body {
+      min-height: 100vh;
+      width: 100vw;
+      background: linear-gradient(135deg, #0a0e27 0%, #1a0b2e 50%, #160b28 100%);
+      position: relative;
+      overflow-y: auto;
+      overflow-x: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 100px 20px 80px 20px;
+    }
+
+    /* Animated gradient orbs */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.5;
+      animation: float 15s ease-in-out infinite;
+      z-index: 0;
+    }
+    
+    .orb1 {
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, #FF6B6B 0%, transparent 70%);
+      top: -150px;
+      right: -150px;
+      animation-delay: 0s;
+    }
+    
+    .orb2 {
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, #4ECDC4 0%, transparent 70%);
+      bottom: 100px;
+      left: -200px;
+      animation-delay: 5s;
+    }
+    
+    .orb3 {
+      width: 450px;
+      height: 450px;
+      background: radial-gradient(circle, #FFE66D 0%, transparent 70%);
+      top: 40%;
+      right: 15%;
+      animation-delay: 10s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(40px, -60px) scale(1.15); }
+      66% { transform: translate(-30px, 40px) scale(0.85); }
+    }
+
+    /* Logo */
+    .logo {
+      position: absolute;
+      left: 80px;
+      top: 64px;
+      display: flex;
+      gap: 4px;
+      font-size: 36px;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      z-index: 10;
+      color: #FFFFFF;
+      text-transform: uppercase;
+    }
+    
+    .logo-dot {
+      color: #FF6B6B;
+      filter: drop-shadow(0 0 15px rgba(255, 107, 107, 0.8));
+      animation: pulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+
+    /* Signup Card - Glassmorphism */
+    .signup-card {
+      width: 540px;
+      padding: 48px 72px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border-radius: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      border: 2px solid rgba(255, 107, 107, 0.3);
+      z-index: 1;
+      animation: slideUp 0.6s ease-out;
+      margin: auto;
+    }
+    
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Title */
+    .title {
+      font-size: 32px;
+      font-weight: 900;
+      color: #FFFFFF;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      background: linear-gradient(135deg, #FFFFFF 0%, #FFE66D 50%, #FF6B6B 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 20px rgba(255, 230, 109, 0.3));
+      text-align: center;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.7);
+      margin-top: 0px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    /* Form */
+    .signup-form {
+      width: 396px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    label {
+      font-size: 14px;
+      font-weight: 700;
+      color: #FFFFFF;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Inputs */
+    .input-wrapper {
+      position: relative;
+      width: 396px;
+    }
+
+    input {
+      width: 396px;
+      height: 48px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      font-size: 14px;
+      color: #FFFFFF;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    input::placeholder {
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    input:focus {
+      border: 2px solid #FF6B6B;
+      outline: none;
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 20px rgba(255, 107, 107, 0.3);
+    }
+
+    /* Eye Icon */
+    .eye {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 28px;
+      height: 28px;
+      cursor: pointer;
+      color: rgba(255, 255, 255, 0.5);
+      user-select: none;
+      background: none;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      transition: all 0.2s;
+      font-size: 18px;
+    }
+
+    .eye:hover {
+      color: #FF6B6B;
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    /* Password Checklist */
+    .password-checklist {
+      margin-top: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 12px;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 600;
+    }
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1 1 45%;
+    }
+    .circle {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      display: inline-block;
+      flex-shrink: 0;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      transition: all 0.3s ease;
+    }
+    .circle.valid {
+      background: #4ECDC4;
+      border-color: #4ECDC4;
+      box-shadow: 0 0 10px rgba(78, 205, 196, 0.5);
+    }
+
+    /* Button */
+    button[type="submit"] {
+      width: 396px;
+      height: 56px;
+      background: linear-gradient(135deg, #FF6B6B 0%, #FFE66D 100%);
+      border-radius: 12px;
+      border: none;
+      color: #0a0e27;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      box-shadow: 0 8px 30px rgba(255, 107, 107, 0.4);
+      margin-top: 8px;
+    }
+
+    /* Footer */
+    .signup-footer {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.6);
+      font-weight: 600;
+    }
+
+    .signup-footer a {
+      color: #4ECDC4;
+      text-decoration: none;
+      font-weight: 700;
+      transition: all 0.2s ease;
+    }
+    
+    .signup-footer a:hover {
+      color: #FFE66D;
+      text-shadow: 0 0 10px rgba(255, 230, 109, 0.5);
+    }
+
+    /* Fun tagline */
+    .tagline {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.4);
+      font-weight: 600;
+      text-align: center;
+      z-index: 10;
+    }
+
+    @media (max-width: 768px) {
+      .logo {
+        left: 40px;
+        top: 40px;
+        font-size: 28px;
+      }
+      
+      .signup-card {
+        width: 90%;
+        padding: 40px 32px;
+      }
+      
+      .signup-form, .input-wrapper, input, button[type="submit"] {
+        width: 100%;
+      }
+      
+      .tagline {
+        bottom: 20px;
+        font-size: 12px;
+        padding: 0 20px;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Animated gradient orbs -->
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+
+  <!-- Logo -->
+  <div class="logo">
+    <span class="logo-text">KLIKSY</span>
+    <span class="logo-dot">.</span>
+  </div>
+
+  <!-- Signup Card -->
+  <div class="signup-card">
+    <div>
+      <div class="title">Join the Party!</div>
+      <div class="subtitle">🎉 Create your account & start sharing! 🎉</div>
+    </div>
+
+    <form class="signup-form" id="signupForm">
+
+      <!-- Username -->
+      <div class="field">
+        <label>Username</label>
+        <div class="input-wrapper">
+          <input type="text" placeholder="Enter your username" required>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="field">
+        <label>Email</label>
+        <div class="input-wrapper">
+          <input type="email" placeholder="your@email.com" required>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="field">
+        <label>Password</label>
+        <div class="input-wrapper">
+          <input type="password" id="password" placeholder="••••••••" required>
+          <button type="button" class="eye" id="togglePassword"><i class="fas fa-eye"></i></button>
+        </div>
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="field">
+        <label>Confirm Password</label>
+        <div class="input-wrapper">
+          <input type="password" id="confirmPassword" placeholder="••••••••" required>
+          <button type="button" class="eye" id="toggleConfirm"><i class="fas fa-eye"></i></button>
+        </div>
+      </div>
+
+      <!-- Password Checklist -->
+      <div class="password-checklist">
+        <div class="check-item"><span class="circle" id="lengthCheck"></span> At least 8 characters</div>
+        <div class="check-item"><span class="circle" id="uppercaseCheck"></span> One uppercase letter</div>
+        <div class="check-item"><span class="circle" id="lowercaseCheck"></span> One lowercase letter</div>
+        <div class="check-item"><span class="circle" id="numberCheck"></span> One number</div>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit">Sign Up! 🚀</button>
+
+      <!-- Footer -->
+      <div class="signup-footer">
+        <span>Already have an account?</span>
+        <a href="login.html">Log in</a>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- Fun tagline -->
+  <div class="tagline">Where Memes Live 😂</div>
+
+  <script>
+    // Toggle password visibility
+    function setupEye(inputId, buttonId){
+      document.getElementById(buttonId).addEventListener('click', function(){
+        const input = document.getElementById(inputId);
+        const icon = this.querySelector('i');
+        if(input.type === 'password'){
+          input.type = 'text';
+          icon.classList.replace('fa-eye','fa-eye-slash');
+        } else {
+          input.type = 'password';
+          icon.classList.replace('fa-eye-slash','fa-eye');
+        }
+      });
+    }
+    setupEye('password','togglePassword');
+    setupEye('confirmPassword','toggleConfirm');
+
+    // Live password checklist
+    const passwordInput = document.getElementById('password');
+    passwordInput.addEventListener('input', () => {
+      const value = passwordInput.value;
+      document.getElementById('lengthCheck').classList.toggle('valid', value.length >= 8);
+      document.getElementById('uppercaseCheck').classList.toggle('valid', /[A-Z]/.test(value));
+      document.getElementById('lowercaseCheck').classList.toggle('valid', /[a-z]/.test(value));
+      document.getElementById('numberCheck').classList.toggle('valid', /[0-9]/.test(value));
+    });
+
+    // Form submission validation
+    document.getElementById('signupForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const password = document.getElementById('password').value;
+      const confirm = document.getElementById('confirmPassword').value;
+
+      if(password !== confirm){
+        alert("Passwords do not match!");
+        return;
+      }
+      if(password.length < 8 || !/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/[0-9]/.test(password)){
+        alert("Password does not meet all requirements!");
+        return;
+      }
+
+      alert("Welcome to KLIKSY! 🎉");
+      // TODO: Connect to backend
+    });
+  </script>
+
+</body>
+</html>
