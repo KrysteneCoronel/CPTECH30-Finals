@@ -75,26 +75,18 @@
         }
         .logo-dot { 
             color: #FF6B6B;
-            filter: drop-shadow(0 0 15px rgba(255, 107, 107, 0.8));
-            animation: pulse 2s ease-in-out infinite;
         }
         
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-        }
-
         /* Navigation */
         nav {
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(10, 14, 39, 0.8);
+            background: #0a0e27;
             padding: 16px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            backdrop-filter: blur(20px);
             border-bottom: 2px solid rgba(255, 107, 107, 0.2);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
@@ -114,7 +106,6 @@
         .nav-links a.active { 
             color: #FFFFFF;
             background: linear-gradient(135deg, rgba(255, 107, 107, 0.3) 0%, rgba(78, 205, 196, 0.3) 100%);
-            box-shadow: 0 0 20px rgba(255, 107, 107, 0.4);
         }
         
         .nav-links a:hover { 
@@ -132,7 +123,6 @@
             align-items: center;
             gap: 8px;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.5);
             border: none;
             color: white;
             cursor: pointer;
@@ -141,7 +131,6 @@
             letter-spacing: 0.05em;
         }
         .logout-btn:hover { 
-            box-shadow: 0 6px 25px rgba(255, 107, 107, 0.7);
         }
 
         /* Main content */
@@ -155,8 +144,7 @@
 
         /* Profile Header Card */
         .profile-header {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
+            background: linear-gradient(135deg, #1a0b2e 0%, #0f0520 100%);
             border-radius: 24px;
             border: 2px solid rgba(255, 107, 107, 0.3);
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
@@ -234,23 +222,6 @@
             margin-right: 8px;
         }
 
-        .edit-profile-btn {
-            background: linear-gradient(135deg, #FF6B6B 0%, #FFE66D 100%);
-            color: #0a0e27;
-            padding: 12px 32px;
-            border-radius: 12px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            font-size: 14px;
-            cursor: pointer;
-            border: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
-        }
-
-
-
         /* Filter Tabs */
         .filter-tabs {
             display: flex;
@@ -278,7 +249,6 @@
             background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
             border-color: #FF6B6B;
             color: #FFFFFF;
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
         }
         
         .filter-tab:hover {
@@ -349,15 +319,15 @@
         }
 
         .overlay-btn {
-            width: 48px;
-            height: 48px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: all 0.2s ease;
-            font-size: 18px;
+            font-size: 14px;
             border: none;
             color: white;
         }
@@ -369,10 +339,6 @@
 
         .overlay-btn.delete {
             background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
-        }
-
-        .overlay-btn:hover {
-            transform: scale(1.1);
         }
 
         .photo-info {
@@ -543,96 +509,6 @@
             z-index: 10;
         }
 
-
-
-        /* Edit Profile Modal */
-        .edit-modal-content {
-            max-width: 500px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
-            border: 2px solid rgba(255, 107, 107, 0.3);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            padding: 40px;
-            position: relative;
-        }
-
-        .edit-form-group {
-            margin-bottom: 20px;
-        }
-
-        .edit-form-group label {
-            display: block;
-            color: #FFFFFF;
-            font-weight: 700;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 8px;
-        }
-
-        .edit-form-group input {
-            width: 100%;
-            padding: 12px 16px;
-            border-radius: 12px;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            font-size: 14px;
-            color: #FFFFFF;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .edit-form-group input::placeholder {
-            color: rgba(255, 255, 255, 0.4);
-        }
-
-        .edit-form-group input:focus {
-            border: 2px solid #FF6B6B;
-            outline: none;
-            background: rgba(255, 255, 255, 0.08);
-            box-shadow: 0 0 20px rgba(255, 107, 107, 0.3);
-        }
-
-        .edit-form-actions {
-            display: flex;
-            gap: 12px;
-            margin-top: 32px;
-        }
-
-        .btn-save, .btn-cancel {
-            flex: 1;
-            padding: 14px;
-            border-radius: 12px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            font-size: 14px;
-            cursor: pointer;
-            border: none;
-            transition: all 0.3s ease;
-        }
-
-        .btn-save {
-            background: linear-gradient(135deg, #FF6B6B 0%, #FFE66D 100%);
-            color: #0a0e27;
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
-        }
-
-
-
-        .btn-cancel {
-            background: rgba(255, 255, 255, 0.1);
-            color: #FFFFFF;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .btn-cancel:hover {
-            background: rgba(255, 255, 255, 0.15);
-        }
-
         /* Utility classes */
         .flex { display: flex; }
         .items-center { align-items: center; }
@@ -684,7 +560,7 @@
                 <a href="upload.html">Upload</a>
                 <a href="profile.html" class="active">Profile</a>
             </div>
-            <button class="logout-btn" onclick="window.location.href='login.html'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            <button class="logout-btn" onclick="window.location.href='index.html'"><i class="fas fa-sign-out-alt"></i> Logout</button>
         </div>
     </nav>
 
@@ -722,9 +598,6 @@
                         Member since January 2026
                     </p>
                     
-                    <button class="edit-profile-btn" onclick="openEditModal()">
-                        <i class="fas fa-edit"></i> Edit Profile
-                    </button>
                 </div>
             </div>
         </div>
@@ -892,29 +765,6 @@
         </div>
     </div>
 
-    <!-- Edit Profile Modal -->
-    <div id="editModal" class="modal hidden">
-        <div class="edit-modal-content">
-            <button class="close-modal" onclick="closeEditModal()">&times;</button>
-            <h3 class="modal-header-title">Edit Profile</h3>
-            
-            <div class="edit-form-group">
-                <label for="editUsername">Username</label>
-                <input type="text" id="editUsername" placeholder="Enter new username">
-            </div>
-            
-            <div class="edit-form-group">
-                <label for="editEmail">Email</label>
-                <input type="email" id="editEmail" placeholder="Enter new email">
-            </div>
-            
-            <div class="edit-form-actions">
-                <button class="btn-cancel" onclick="closeEditModal()">Cancel</button>
-                <button class="btn-save" onclick="saveProfile()">Save Changes</button>
-            </div>
-        </div>
-    </div>
-
     <script>
         // Filter tabs functionality
         const filterTabs = document.querySelectorAll('.filter-tab');
@@ -1059,48 +909,6 @@
             document.getElementById('totalMemes').textContent = allCards.length;
             document.getElementById('publicMemes').textContent = publicCards.length;
             document.getElementById('privateMemes').textContent = privateCards.length;
-        }
-
-        // Edit Profile Modal
-        function openEditModal() {
-            const currentUsername = document.getElementById('displayUsername').textContent;
-            const currentEmail = document.getElementById('displayEmail').textContent;
-            
-            document.getElementById('editUsername').value = currentUsername;
-            document.getElementById('editEmail').value = currentEmail;
-            document.getElementById('editModal').classList.remove('hidden');
-        }
-
-        function closeEditModal() {
-            document.getElementById('editModal').classList.add('hidden');
-        }
-
-        function saveProfile() {
-            const newUsername = document.getElementById('editUsername').value.trim();
-            const newEmail = document.getElementById('editEmail').value.trim();
-            
-            if (!newUsername || !newEmail) {
-                alert('Please fill in all fields! 📝');
-                return;
-            }
-            
-            if (!newEmail.includes('@')) {
-                alert('Please enter a valid email address! 📧');
-                return;
-            }
-            
-            // Update profile display
-            document.getElementById('displayUsername').textContent = newUsername;
-            document.getElementById('displayEmail').textContent = newEmail;
-            
-            // Update avatar initial
-            document.getElementById('profileAvatar').textContent = newUsername.charAt(0).toUpperCase();
-            
-            // Close modal
-            closeEditModal();
-            
-            // Show success message
-            alert('Profile updated successfully! 🎉');
         }
 
         // Close modals when clicking outside

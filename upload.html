@@ -75,13 +75,6 @@
         }
         .logo-dot { 
             color: #FF6B6B;
-            filter: drop-shadow(0 0 15px rgba(255, 107, 107, 0.8));
-            animation: pulse 2s ease-in-out infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
         }
 
         /* Navigation */
@@ -89,12 +82,11 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(10, 14, 39, 0.8);
+            background: #0a0e27;
             padding: 16px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            backdrop-filter: blur(20px);
             border-bottom: 2px solid rgba(255, 107, 107, 0.2);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
@@ -132,7 +124,6 @@
             align-items: center;
             gap: 8px;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.5);
             border: none;
             color: white;
             cursor: pointer;
@@ -141,7 +132,6 @@
             letter-spacing: 0.05em;
         }
         .logout-btn:hover { 
-            box-shadow: 0 6px 25px rgba(255, 107, 107, 0.7);
         }
 
         /* Main content */
@@ -158,13 +148,9 @@
             font-size: 56px;
             font-weight: 900;
             line-height: 1;
-            background: linear-gradient(135deg, #FFFFFF 0%, #FFE66D 40%, #FF6B6B 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #FFFFFF;
             margin-bottom: 12px;
             text-align: center;
-            filter: drop-shadow(0 0 40px rgba(255, 230, 109, 0.4));
             text-transform: uppercase;
             letter-spacing: -0.02em;
         }
@@ -179,8 +165,7 @@
 
         /* Upload Card */
         .upload-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
+            background: linear-gradient(135deg, #1a0b2e 0%, #0f0520 100%);
             border-radius: 24px;
             border: 2px solid rgba(255, 107, 107, 0.3);
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
@@ -200,18 +185,18 @@
 
         /* Drop Area */
         .drop-area {
-            border: 3px dashed rgba(255, 255, 255, 0.2);
+            border: 3px dashed rgba(255, 107, 107, 0.4);
             border-radius: 16px;
             padding: 48px;
             text-align: center;
-            background: rgba(255, 255, 255, 0.02);
+            background: rgba(20, 10, 40, 0.6);
             transition: all 0.3s ease;
             cursor: pointer;
         }
 
         .drop-area:hover {
-            border-color: rgba(255, 107, 107, 0.5);
-            background: rgba(255, 107, 107, 0.05);
+            border-color: #FF6B6B;
+            background: rgba(255, 107, 107, 0.15);
         }
 
         .drop-area.drag-over {
@@ -237,7 +222,6 @@
             cursor: pointer;
             display: inline-block;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
             border: none;
         }
 
@@ -275,8 +259,7 @@
             padding: 16px 20px;
             border-radius: 12px;
             border: 2px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
+            background: rgba(20, 10, 40, 0.8);
             font-size: 14px;
             color: #FFFFFF;
             font-weight: 500;
@@ -369,7 +352,6 @@
             cursor: pointer;
             border: none;
             transition: all 0.3s ease;
-            box-shadow: 0 8px 30px rgba(255, 107, 107, 0.4);
         }
 
 
@@ -468,7 +450,7 @@
                 <a href="upload.html" class="active">Upload</a>
                 <a href="profile.html">Profile</a>
             </div>
-            <button class="logout-btn" onclick="window.location.href='login.html'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            <button class="logout-btn" onclick="window.location.href='index.html'"><i class="fas fa-sign-out-alt"></i> Logout</button>
         </div>
     </nav>
 
