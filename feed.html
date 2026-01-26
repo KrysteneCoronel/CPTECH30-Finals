@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>KLIKSY Feed</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -357,8 +359,7 @@
 
     /* Photo Modal */
     #photoModal {
-      background: rgba(10, 14, 39, 0.95);
-      backdrop-filter: blur(10px);
+      background: rgba(10, 14, 39, 0.98);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -375,14 +376,13 @@
       flex-direction: column;
       max-width: 700px;
       width: 100%;
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(20px);
+      background: rgba(26, 11, 46, 0.95);
       border-radius: 24px;
       overflow: hidden;
       max-height: 90vh;
       overflow-y: auto;
       border: 2px solid rgba(255, 107, 107, 0.3);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
       position: relative;
     }
     
@@ -516,24 +516,15 @@
   </style>
 </head>
 <body>
-
-  <!-- Animated gradient orbs -->
-  <div class="orb orb1"></div>
-  <div class="orb orb2"></div>
-  <div class="orb orb3"></div>
-
   <!-- Navigation -->
-  <nav>
+  <nav id="mainNav">
     <div class="logo">
       <span class="logo-text">KLIKSY</span><span class="logo-dot">.</span>
     </div>
-    <div class="flex items-center gap-6">
-      <div class="nav-links flex gap-2">
-        <a href="feed.html" class="active">Feed</a>
-        <a href="upload.html">Upload</a>
-        <a href="profile.html">Profile</a>
-      </div>
-      <button class="logout-btn" onclick="window.location.href='index.html'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    <div class="nav-links flex gap-2">
+      <a href="feed.html" class="nav-link active">Feed</a>
+      <a href="upload.html" class="nav-link">Upload</a>
+      <a href="profile.html" class="nav-link">Profile</a>
     </div>
   </nav>
 
@@ -768,27 +759,25 @@
     const totalPages = 2;
 
     function showPage(page) {
+      if (page === currentPage) return; // no-op to avoid redundant swaps
       if (page < 1 || page > totalPages) return;
-      
-      currentPage = page;
-      
-      // Hide all pages
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      
-      // Show current page
-      document.querySelector(`.page[data-page="${page}"]`).classList.add('active');
-      
-      // Update active button
+
+      const next = document.querySelector(`.page[data-page="${page}"]`);
+      if (!next) return;
+
+      // Swap active page without collapsing layout
+      document.querySelector('.page.active')?.classList.remove('active');
+      next.classList.add('active');
+
+      // Update active buttons
       document.querySelectorAll('.page-btn').forEach(btn => {
-        btn.classList.remove('active');
-        if (btn.dataset.page === String(page)) {
-          btn.classList.add('active');
-        }
-      });      
-      // Scroll to top
-      window.scrollTo({ top: 0, behavior: 'smooth' });      
-      // Scroll to top
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+        btn.classList.toggle('active', btn.dataset.page === String(page));
+      });
+
+      currentPage = page;
+
+      // Instant snap to top to eliminate flicker from smooth scroll
+      window.scrollTo({ top: 0, behavior: 'auto' });
     }
 
     // Pagination button click handlers
