@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KLIKSY Profile</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="auth.js"></script>
     <style>
         * { box-sizing: border-box; margin:0; padding:0; font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; }
 
@@ -513,7 +514,7 @@
     <main>
         <!-- Profile Header -->
         <div class="profile-header">
-            <button class="logout-btn" onclick="window.location.href='index.html'">
+            <button class="logout-btn" onclick="kliksyAuth.logout()">
                 <i class="fas fa-sign-out-alt"></i> Logout
             </button>
             <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
