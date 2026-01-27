@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="auth.js"></script>
     <style>
-        * { box-sizing: border-box; margin:0; padding:0; font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+        }
 
         body {
             background: linear-gradient(135deg, #0a0e27 0%, #1a0b2e 50%, #160b28 100%);
@@ -30,10 +36,11 @@
             color: #FFFFFF;
             text-transform: uppercase;
         }
-        .logo-dot { 
+
+        .logo-dot {
             color: #FF6B6B;
         }
-        
+
         /* Navigation */
         nav {
             position: sticky;
@@ -47,7 +54,7 @@
             border-bottom: 2px solid rgba(255, 107, 107, 0.2);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
-        
+
         .nav-links a {
             font-weight: 700;
             color: rgba(255, 255, 255, 0.7);
@@ -59,13 +66,13 @@
             letter-spacing: 0.05em;
             text-decoration: none;
         }
-        
-        .nav-links a.active { 
+
+        .nav-links a.active {
             color: #FFFFFF;
             background: linear-gradient(135deg, rgba(255, 107, 107, 0.3) 0%, rgba(78, 205, 196, 0.3) 100%);
         }
-        
-        .nav-links a:hover { 
+
+        .nav-links a:hover {
             color: #FFFFFF;
             background: rgba(255, 107, 107, 0.2);
         }
@@ -189,7 +196,7 @@
             margin-bottom: 48px;
             flex-wrap: wrap;
         }
-        
+
         .filter-tab {
             padding: 10px 24px;
             border-radius: 30px;
@@ -203,13 +210,13 @@
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
-        
+
         .filter-tab.active {
             background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
             border-color: #FF6B6B;
             color: #FFFFFF;
         }
-        
+
         .filter-tab:hover {
             border-color: #FF6B6B;
             color: #FFFFFF;
@@ -227,14 +234,14 @@
             cursor: pointer;
             position: relative;
         }
-        
-        .photo-card:hover { 
+
+        .photo-card:hover {
             border-color: rgba(255, 107, 107, 0.5);
         }
 
-        .photo-card img { 
-            width: 100%; 
-            height: 300px; 
+        .photo-card img {
+            width: 100%;
+            height: 300px;
             object-fit: cover;
         }
 
@@ -465,49 +472,83 @@
         }
 
         /* Utility classes */
-        .flex { display: flex; }
-        .items-center { align-items: center; }
-        .justify-center { justify-content: center; }
-        .gap-2 { gap: 8px; }
-        .gap-4 { gap: 16px; }
-        .gap-6 { gap: 24px; }
-        .hidden { display: none; }
-        .grid { display: grid; }
-        .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
-        
+        .flex {
+            display: flex;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-center {
+            justify-content: center;
+        }
+
+        .gap-2 {
+            gap: 8px;
+        }
+
+        .gap-4 {
+            gap: 16px;
+        }
+
+        .gap-6 {
+            gap: 24px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .grid {
+            display: grid;
+        }
+
+        .grid-cols-1 {
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+        }
+
         @media (min-width: 640px) {
-            .sm-grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .sm-grid-cols-2 {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
         }
-        
+
         @media (min-width: 1024px) {
-            .lg-grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            .lg-grid-cols-3 {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
         }
-        
+
         @media (min-width: 1280px) {
-            .xl-grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+            .xl-grid-cols-4 {
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+            }
         }
-        
+
         @media (max-width: 640px) {
             .modal-content {
                 flex-direction: column;
             }
+
             .stats-container {
                 flex-wrap: wrap;
             }
         }
     </style>
 </head>
+
 <body>
     <!-- Navigation -->
     <nav id="mainNav">
-      <div class="logo">
-        <span class="logo-text">KLIKSY</span><span class="logo-dot">.</span>
-      </div>
-      <div class="nav-links flex gap-2">
-        <a href="feed.html" class="nav-link">Feed</a>
-        <a href="upload.html" class="nav-link">Upload</a>
-        <a href="profile.html" class="nav-link active">Profile</a>
-      </div>
+        <div class="logo">
+            <span class="logo-text">KLIKSY</span><span class="logo-dot">.</span>
+        </div>
+        <div class="nav-links flex gap-2">
+            <a href="feed.html" class="nav-link">Feed</a>
+            <a href="upload.html" class="nav-link">Upload</a>
+            <a href="profile.html" class="nav-link active">Profile</a>
+        </div>
     </nav>
 
     <!-- Main Content -->
@@ -520,12 +561,12 @@
             <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
                 <!-- Profile Picture -->
                 <div class="profile-avatar" id="profileAvatar">U</div>
-                
+
                 <!-- Profile Info -->
                 <div class="flex-1 text-center md:text-left">
                     <h2 class="profile-username" id="displayUsername">username_here</h2>
                     <p class="profile-email" id="displayEmail">user@example.com</p>
-                    
+
                     <!-- Stats -->
                     <div class="stats-container justify-center md:justify-start">
                         <div class="stat-item">
@@ -541,7 +582,7 @@
                             <div class="stat-label">Private</div>
                         </div>
                     </div>
-                    
+
                     <p class="member-since">
                         <i class="fas fa-calendar-alt"></i>
                         Member since January 2026
@@ -570,7 +611,8 @@
                 <div class="privacy-badge public">
                     <i class="fas fa-globe"></i> Public
                 </div>
-                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop" alt="My Photo">
+                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop"
+                    alt="My Photo">
                 <div class="photo-overlay">
                     <button class="overlay-btn view" onclick="openModal(this)">
                         <i class="fas fa-eye"></i>
@@ -590,7 +632,8 @@
                 <div class="privacy-badge private">
                     <i class="fas fa-lock"></i> Private
                 </div>
-                <img src="https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=400&h=400&fit=crop" alt="My Photo">
+                <img src="https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=400&h=400&fit=crop"
+                    alt="My Photo">
                 <div class="photo-overlay">
                     <button class="overlay-btn view" onclick="openModal(this)">
                         <i class="fas fa-eye"></i>
@@ -610,7 +653,8 @@
                 <div class="privacy-badge public">
                     <i class="fas fa-globe"></i> Public
                 </div>
-                <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&h=400&fit=crop" alt="My Photo">
+                <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&h=400&fit=crop"
+                    alt="My Photo">
                 <div class="photo-overlay">
                     <button class="overlay-btn view" onclick="openModal(this)">
                         <i class="fas fa-eye"></i>
@@ -630,7 +674,8 @@
                 <div class="privacy-badge public">
                     <i class="fas fa-globe"></i> Public
                 </div>
-                <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&h=400&fit=crop" alt="My Photo">
+                <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&h=400&fit=crop"
+                    alt="My Photo">
                 <div class="photo-overlay">
                     <button class="overlay-btn view" onclick="openModal(this)">
                         <i class="fas fa-eye"></i>
@@ -650,7 +695,8 @@
                 <div class="privacy-badge private">
                     <i class="fas fa-lock"></i> Private
                 </div>
-                <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=400&h=400&fit=crop" alt="My Photo">
+                <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=400&h=400&fit=crop"
+                    alt="My Photo">
                 <div class="photo-overlay">
                     <button class="overlay-btn view" onclick="openModal(this)">
                         <i class="fas fa-eye"></i>
@@ -670,7 +716,8 @@
                 <div class="privacy-badge public">
                     <i class="fas fa-globe"></i> Public
                 </div>
-                <img src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=400&h=400&fit=crop" alt="My Photo">
+                <img src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=400&h=400&fit=crop"
+                    alt="My Photo">
                 <div class="photo-overlay">
                     <button class="overlay-btn view" onclick="openModal(this)">
                         <i class="fas fa-eye"></i>
@@ -704,7 +751,9 @@
                 <h3 class="modal-header-title">Your Meme</h3>
                 <div id="modalPrivacy" class="modal-privacy"></div>
                 <p id="modalTimestamp" class="modal-timestamp"></p>
-                <h4 style="color: rgba(255, 255, 255, 0.8); font-weight: 700; font-size: 14px; margin-bottom: 12px; text-transform: uppercase;">Description</h4>
+                <h4
+                    style="color: rgba(255, 255, 255, 0.8); font-weight: 700; font-size: 14px; margin-bottom: 12px; text-transform: uppercase;">
+                    Description</h4>
                 <p id="modalDescription" class="modal-description"></p>
                 <button class="modal-delete-btn" onclick="deleteCurrentPhoto()">
                     <i class="fas fa-trash"></i> Delete Meme
@@ -736,10 +785,10 @@
         const photoCards = document.querySelectorAll('.photo-card');
         const emptyState = document.getElementById('emptyState');
         const photosGrid = document.getElementById('photosGrid');
-        
+
         // Make photo cards clickable to view
         photoCards.forEach(card => {
-            card.addEventListener('click', function(e) {
+            card.addEventListener('click', function (e) {
                 // Don't open if clicking delete button
                 if (e.target.closest('.overlay-btn.delete')) {
                     return;
@@ -747,23 +796,23 @@
                 openModal(card.querySelector('.overlay-btn.delete'));
             });
         });
-        
+
         filterTabs.forEach(tab => {
-            tab.addEventListener('click', function() {
+            tab.addEventListener('click', function () {
                 // Remove active class from all tabs
                 filterTabs.forEach(t => t.classList.remove('active'));
-                
+
                 // Add active class to clicked tab
                 this.classList.add('active');
-                
+
                 // Get filter value
                 const filter = this.getAttribute('data-filter');
-                
+
                 // Filter photos
                 let visibleCount = 0;
                 photoCards.forEach(card => {
                     const privacy = card.getAttribute('data-privacy');
-                    
+
                     if (filter === 'all' || filter === privacy) {
                         card.style.display = 'block';
                         visibleCount++;
@@ -771,7 +820,7 @@
                         card.style.display = 'none';
                     }
                 });
-                
+
                 // Show/hide empty state
                 if (visibleCount === 0) {
                     emptyState.classList.remove('hidden');
@@ -793,11 +842,11 @@
             const description = currentCard.querySelector('.photo-description').textContent;
             const timestamp = currentCard.querySelector('.photo-timestamp').textContent;
             const privacy = currentCard.getAttribute('data-privacy');
-            
+
             document.getElementById('modalImage').src = img.src;
             document.getElementById('modalDescription').textContent = description;
             document.getElementById('modalTimestamp').textContent = timestamp;
-            
+
             const modalPrivacy = document.getElementById('modalPrivacy');
             if (privacy === 'public') {
                 modalPrivacy.className = 'modal-privacy public';
@@ -806,7 +855,7 @@
                 modalPrivacy.className = 'modal-privacy private';
                 modalPrivacy.innerHTML = '<i class="fas fa-lock"></i> Private';
             }
-            
+
             modal.classList.remove('hidden');
         }
 
@@ -820,18 +869,18 @@
                 const card = button.closest('.photo-card');
                 card.style.opacity = '0';
                 card.style.transform = 'scale(0.8)';
-                
+
                 setTimeout(() => {
                     card.remove();
                     updateStats();
-                    
+
                     // Check if we need to show empty state
                     const remainingCards = document.querySelectorAll('.photo-card');
                     const activeFilter = document.querySelector('.filter-tab.active').getAttribute('data-filter');
                     const visibleCards = Array.from(remainingCards).filter(c => {
                         return activeFilter === 'all' || c.getAttribute('data-privacy') === activeFilter;
                     });
-                    
+
                     if (visibleCards.length === 0) {
                         emptyState.classList.remove('hidden');
                         photosGrid.style.display = 'none';
@@ -845,18 +894,18 @@
                 closePhotoModal();
                 currentCard.style.opacity = '0';
                 currentCard.style.transform = 'scale(0.8)';
-                
+
                 setTimeout(() => {
                     currentCard.remove();
                     updateStats();
-                    
+
                     // Check if we need to show empty state
                     const remainingCards = document.querySelectorAll('.photo-card');
                     const activeFilter = document.querySelector('.filter-tab.active').getAttribute('data-filter');
                     const visibleCards = Array.from(remainingCards).filter(c => {
                         return activeFilter === 'all' || c.getAttribute('data-privacy') === activeFilter;
                     });
-                    
+
                     if (visibleCards.length === 0) {
                         emptyState.classList.remove('hidden');
                         photosGrid.style.display = 'none';
@@ -870,25 +919,26 @@
             const allCards = document.querySelectorAll('.photo-card');
             const publicCards = Array.from(allCards).filter(c => c.getAttribute('data-privacy') === 'public');
             const privateCards = Array.from(allCards).filter(c => c.getAttribute('data-privacy') === 'private');
-            
+
             document.getElementById('totalMemes').textContent = allCards.length;
             document.getElementById('publicMemes').textContent = publicCards.length;
             document.getElementById('privateMemes').textContent = privateCards.length;
         }
 
         // Close modals when clicking outside
-        document.getElementById('photoModal').addEventListener('click', function(e) {
+        document.getElementById('photoModal').addEventListener('click', function (e) {
             if (e.target === this) {
                 closePhotoModal();
             }
         });
 
         // Close modals with Escape key
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape') {
                 closePhotoModal();
             }
         });
     </script>
 </body>
+
 </html>

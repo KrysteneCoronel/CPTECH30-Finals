@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,12 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="auth.js"></script>
   <style>
-    * { box-sizing: border-box; margin:0; padding:0; font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    }
 
     body {
       background: linear-gradient(135deg, #0a0e27 0%, #1a0b2e 50%, #160b28 100%);
@@ -27,7 +33,7 @@
       animation: float 15s ease-in-out infinite;
       z-index: 0;
     }
-    
+
     .orb1 {
       width: 600px;
       height: 600px;
@@ -36,7 +42,7 @@
       right: -150px;
       animation-delay: 0s;
     }
-    
+
     .orb2 {
       width: 500px;
       height: 500px;
@@ -45,7 +51,7 @@
       left: -200px;
       animation-delay: 5s;
     }
-    
+
     .orb3 {
       width: 450px;
       height: 450px;
@@ -56,9 +62,19 @@
     }
 
     @keyframes float {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      33% { transform: translate(40px, -60px) scale(1.15); }
-      66% { transform: translate(-30px, 40px) scale(0.85); }
+
+      0%,
+      100% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      33% {
+        transform: translate(40px, -60px) scale(1.15);
+      }
+
+      66% {
+        transform: translate(-30px, 40px) scale(0.85);
+      }
     }
 
     /* Logo */
@@ -73,10 +89,11 @@
       color: #FFFFFF;
       text-transform: uppercase;
     }
-    .logo-dot { 
+
+    .logo-dot {
       color: #FF6B6B;
     }
-    
+
     /* Navigation */
     nav {
       position: sticky;
@@ -90,7 +107,7 @@
       border-bottom: 2px solid rgba(255, 107, 107, 0.2);
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     }
-    
+
     .nav-links a {
       font-weight: 700;
       color: rgba(255, 255, 255, 0.7);
@@ -102,13 +119,13 @@
       letter-spacing: 0.05em;
       text-decoration: none;
     }
-    
-    .nav-links a.active { 
+
+    .nav-links a.active {
       color: #FFFFFF;
       background: linear-gradient(135deg, rgba(255, 107, 107, 0.3) 0%, rgba(78, 205, 196, 0.3) 100%);
     }
-    
-    .nav-links a:hover { 
+
+    .nav-links a:hover {
       color: #FFFFFF;
       background: rgba(255, 107, 107, 0.2);
     }
@@ -154,9 +171,9 @@
       letter-spacing: -0.02em;
     }
 
-    p.subtitle { 
-      color: rgba(255, 255, 255, 0.7); 
-      margin-bottom: 48px; 
+    p.subtitle {
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 48px;
       text-align: center;
       font-size: 20px;
       font-weight: 600;
@@ -174,32 +191,32 @@
       cursor: pointer;
       position: relative;
     }
-    
-    .meme-card:hover { 
+
+    .meme-card:hover {
       border-color: rgba(255, 107, 107, 0.5);
     }
 
-    .meme-card img { 
-      width: 100%; 
-      height: 300px; 
+    .meme-card img {
+      width: 100%;
+      height: 300px;
       object-fit: cover;
       position: relative;
       z-index: 1;
     }
 
-    .meme-card .info { 
+    .meme-card .info {
       padding: 16px;
       position: relative;
       z-index: 1;
     }
-    
+
     .meme-card .user {
       display: flex;
       align-items: center;
       gap: 10px;
       margin-bottom: 12px;
     }
-    
+
     .meme-card .avatar {
       width: 36px;
       height: 36px;
@@ -213,15 +230,15 @@
       box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
       color: white;
     }
-    
+
     .meme-card .user span {
       font-weight: 600;
       color: #FFFFFF;
       font-size: 14px;
     }
-    
-    .meme-card .description { 
-      font-size: 14px; 
+
+    .meme-card .description {
+      font-size: 14px;
       color: rgba(255, 255, 255, 0.9);
       overflow: hidden;
       text-overflow: ellipsis;
@@ -229,13 +246,13 @@
       line-height: 1.6;
       margin-bottom: 12px;
     }
-    
+
     .meme-card .reactions {
       display: flex;
       gap: 16px;
       align-items: center;
     }
-    
+
     .meme-card .reaction-btn {
       display: flex;
       align-items: center;
@@ -245,19 +262,19 @@
       transition: all 0.2s ease;
       color: rgba(255, 255, 255, 0.6);
     }
-    
+
     .meme-card .reaction-btn span {
       font-size: 13px;
       font-weight: 600;
       color: rgba(255, 255, 255, 0.8);
     }
-    
+
     .meme-card .reaction-btn:hover {
       transform: scale(1.2);
     }
-    
-    .meme-card .timestamp { 
-      font-size: 11px; 
+
+    .meme-card .timestamp {
+      font-size: 11px;
       color: rgba(255, 255, 255, 0.4);
       margin-left: auto;
       text-transform: uppercase;
@@ -322,7 +339,8 @@
       color: #FFFFFF;
     }
 
-    .prev-btn, .next-btn {
+    .prev-btn,
+    .next-btn {
       padding: 10px 12px;
     }
 
@@ -367,7 +385,10 @@
       padding: 24px;
       overflow-y: auto;
     }
-    #photoModal.hidden { display: none; }
+
+    #photoModal.hidden {
+      display: none;
+    }
 
     #photoModal .modal-content {
       display: flex;
@@ -383,7 +404,7 @@
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
       position: relative;
     }
-    
+
     #photoModal .modal-header {
       padding: 20px 24px;
       border-bottom: 2px solid rgba(255, 255, 255, 0.1);
@@ -392,7 +413,7 @@
       gap: 12px;
       background: rgba(255, 255, 255, 0.02);
     }
-    
+
     #photoModal .modal-header-avatar {
       width: 48px;
       height: 48px;
@@ -405,46 +426,46 @@
       box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
       color: white;
     }
-    
+
     #photoModal .modal-header-info h3 {
       font-size: 16px;
       font-weight: 700;
       color: #FFFFFF;
       margin: 0;
     }
-    
+
     #photoModal .modal-header-info p {
       font-size: 13px;
       color: rgba(255, 255, 255, 0.5);
       margin: 0;
     }
-    
-    #photoModal img { 
-      width: 100%; 
+
+    #photoModal img {
+      width: 100%;
       max-height: 500px;
       object-fit: contain;
       background: rgba(0, 0, 0, 0.3);
     }
-    
-    #photoModal .modal-info { 
+
+    #photoModal .modal-info {
       padding: 24px;
       color: #FFFFFF;
     }
-    
+
     #photoModal .modal-description {
       font-size: 15px;
       color: rgba(255, 255, 255, 0.9);
       line-height: 1.6;
       margin-bottom: 20px;
     }
-    
+
     #photoModal .modal-reactions {
       display: flex;
       gap: 24px;
       padding-top: 16px;
       border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
-    
+
     #photoModal .modal-reaction-btn {
       display: flex;
       align-items: center;
@@ -454,26 +475,26 @@
       transition: all 0.2s ease;
       color: rgba(255, 255, 255, 0.6);
     }
-    
+
     #photoModal .modal-reaction-btn span {
       font-size: 16px;
       font-weight: 700;
       color: rgba(255, 255, 255, 0.8);
     }
-    
+
     #photoModal .modal-reaction-btn:hover {
       transform: scale(1.15);
       color: rgba(255, 255, 255, 1);
     }
-    
-    #photoModal .close-btn { 
-      position: absolute; 
-      top: 20px; 
-      right: 20px; 
-      font-size: 32px; 
+
+    #photoModal .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 32px;
       background: rgba(255, 107, 107, 0.9);
       border: 2px solid rgba(255, 255, 255, 0.3);
-      cursor: pointer; 
+      cursor: pointer;
       color: #fff;
       width: 48px;
       height: 48px;
@@ -491,28 +512,58 @@
     }
 
     /* Utility classes */
-    .flex { display: flex; }
-    .items-center { align-items: center; }
-    .gap-2 { gap: 8px; }
-    .gap-6 { gap: 24px; }
-    .text-center { text-align: center; }
-    .grid { display: grid; }
-    .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
-    .gap-6 { gap: 24px; }
-    
+    .flex {
+      display: flex;
+    }
+
+    .items-center {
+      align-items: center;
+    }
+
+    .gap-2 {
+      gap: 8px;
+    }
+
+    .gap-6 {
+      gap: 24px;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .grid {
+      display: grid;
+    }
+
+    .grid-cols-1 {
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+
+    .gap-6 {
+      gap: 24px;
+    }
+
     @media (min-width: 640px) {
-      .sm-grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .sm-grid-cols-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
     }
-    
+
     @media (min-width: 1024px) {
-      .lg-grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .lg-grid-cols-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
     }
-    
+
     @media (min-width: 1280px) {
-      .xl-grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .xl-grid-cols-4 {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
     }
   </style>
 </head>
+
 <body>
   <!-- Navigation -->
   <nav id="mainNav">
@@ -533,7 +584,9 @@
     <!-- Page 1 -->
     <div class="page active" data-page="1">
       <div class="meme-card">
-        <img src="https://meme-dev-v2.s3.eu-west-1.amazonaws.com/uploads/2020/12/12/1607804567339-13117/_versions/684a37d81cce179f54866420d08a81f8-384.jpg" alt="Mountain Landscape">
+        <img
+          src="https://meme-dev-v2.s3.eu-west-1.amazonaws.com/uploads/2020/12/12/1607804567339-13117/_versions/684a37d81cce179f54866420d08a81f8-384.jpg"
+          alt="Mountain Landscape">
         <div class="info">
           <div class="user">
             <div class="avatar">J</div>
@@ -548,7 +601,9 @@
       </div>
 
       <div class="meme-card">
-        <img src="https://images.unsplash.com/photo-1674981959759-b6d2f9657f64?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Cat">
+        <img
+          src="https://images.unsplash.com/photo-1674981959759-b6d2f9657f64?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          alt="Cat">
         <div class="info">
           <div class="user">
             <div class="avatar">S</div>
@@ -563,7 +618,9 @@
       </div>
 
       <div class="meme-card">
-        <img src="https://meme-dev.s3.eu-west-1.amazonaws.com/uploads/2020/12/12/1607795389653-13117/86A24EFA-5906-49B2-B6DD-9A3B9370E387.jpeg" alt="Food">
+        <img
+          src="https://meme-dev.s3.eu-west-1.amazonaws.com/uploads/2020/12/12/1607795389653-13117/86A24EFA-5906-49B2-B6DD-9A3B9370E387.jpeg"
+          alt="Food">
         <div class="info">
           <div class="user">
             <div class="avatar">M</div>
@@ -593,7 +650,9 @@
       </div>
 
       <div class="meme-card">
-        <img src="https://meme-dev-v2.s3.eu-west-1.amazonaws.com/uploads/2020/12/12/1607804567339-13117/_versions/684a37d81cce179f54866420d08a81f8-384.jpg" alt="Mountain Landscape">
+        <img
+          src="https://meme-dev-v2.s3.eu-west-1.amazonaws.com/uploads/2020/12/12/1607804567339-13117/_versions/684a37d81cce179f54866420d08a81f8-384.jpg"
+          alt="Mountain Landscape">
         <div class="info">
           <div class="user">
             <div class="avatar">J</div>
@@ -608,7 +667,9 @@
       </div>
 
       <div class="meme-card">
-        <img src="https://images.unsplash.com/photo-1674981959759-b6d2f9657f64?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Cat">
+        <img
+          src="https://images.unsplash.com/photo-1674981959759-b6d2f9657f64?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          alt="Cat">
         <div class="info">
           <div class="user">
             <div class="avatar">S</div>
@@ -623,7 +684,9 @@
       </div>
 
       <div class="meme-card">
-        <img src="https://meme-dev.s3.eu-west-1.amazonaws.com/uploads/2020/12/12/1607795389653-13117/86A24EFA-5906-49B2-B6DD-9A3B9370E387.jpeg" alt="Food">
+        <img
+          src="https://meme-dev.s3.eu-west-1.amazonaws.com/uploads/2020/12/12/1607795389653-13117/86A24EFA-5906-49B2-B6DD-9A3B9370E387.jpeg"
+          alt="Food">
         <div class="info">
           <div class="user">
             <div class="avatar">M</div>
@@ -656,7 +719,9 @@
     <!-- Page 2 -->
     <div class="page" data-page="2">
       <div class="meme-card">
-        <img src="https://meme-dev-v2.s3.eu-west-1.amazonaws.com/uploads/2020/12/12/1607804567339-13117/_versions/684a37d81cce179f54866420d08a81f8-384.jpg" alt="Mountain Landscape">
+        <img
+          src="https://meme-dev-v2.s3.eu-west-1.amazonaws.com/uploads/2020/12/12/1607804567339-13117/_versions/684a37d81cce179f54866420d08a81f8-384.jpg"
+          alt="Mountain Landscape">
         <div class="info">
           <div class="user">
             <div class="avatar">J</div>
@@ -671,7 +736,9 @@
       </div>
 
       <div class="meme-card">
-        <img src="https://images.unsplash.com/photo-1674981959759-b6d2f9657f64?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Cat">
+        <img
+          src="https://images.unsplash.com/photo-1674981959759-b6d2f9657f64?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          alt="Cat">
         <div class="info">
           <div class="user">
             <div class="avatar">S</div>
@@ -686,7 +753,9 @@
       </div>
 
       <div class="meme-card">
-        <img src="https://meme-dev.s3.eu-west-1.amazonaws.com/uploads/2020/12/12/1607795389653-13117/86A24EFA-5906-49B2-B6DD-9A3B9370E387.jpeg" alt="Food">
+        <img
+          src="https://meme-dev.s3.eu-west-1.amazonaws.com/uploads/2020/12/12/1607795389653-13117/86A24EFA-5906-49B2-B6DD-9A3B9370E387.jpeg"
+          alt="Food">
         <div class="info">
           <div class="user">
             <div class="avatar">M</div>
@@ -737,10 +806,10 @@
           <p id="modalHeaderTimestamp"></p>
         </div>
       </div>
-      
+
       <!-- Image -->
       <img id="modalImage" src="" alt="">
-      
+
       <!-- Description and reactions -->
       <div class="modal-info">
         <p class="modal-description" id="modalDescription"></p>
@@ -828,14 +897,14 @@
     });
 
     photoModal.addEventListener('click', e => {
-      if(e.target === photoModal) {
+      if (e.target === photoModal) {
         photoModal.classList.add('hidden');
         document.body.style.overflow = 'auto';
       }
     });
 
     document.addEventListener('keydown', e => {
-      if(e.key === 'Escape') {
+      if (e.key === 'Escape') {
         photoModal.classList.add('hidden');
         document.body.style.overflow = 'auto';
       }
@@ -846,4 +915,5 @@
   </script>
 
 </body>
+
 </html>
