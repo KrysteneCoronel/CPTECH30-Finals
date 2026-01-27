@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,7 +34,7 @@
       opacity: 0.5;
       z-index: 0;
     }
-    
+
     .orb1 {
       width: 600px;
       height: 600px;
@@ -42,7 +43,7 @@
       right: -150px;
       animation-delay: 0s;
     }
-    
+
     .orb2 {
       width: 500px;
       height: 500px;
@@ -51,7 +52,7 @@
       left: -200px;
       animation-delay: 5s;
     }
-    
+
     .orb3 {
       width: 450px;
       height: 450px;
@@ -75,7 +76,7 @@
       color: #FFFFFF;
       text-transform: uppercase;
     }
-    
+
     .logo-dot {
       color: #FF6B6B;
     }
@@ -95,7 +96,7 @@
       border: 2px solid rgba(255, 107, 107, 0.3);
       z-index: 1;
     }
-    
+
     /* Title */
     .title {
       font-size: 32px;
@@ -180,7 +181,7 @@
       letter-spacing: 0.05em;
       transition: all 0.2s ease;
     }
-    
+
     .forgot:hover {
       color: #FFE66D;
     }
@@ -228,6 +229,22 @@
       margin-top: 8px;
     }
 
+    .status-message {
+      min-height: 24px;
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .status-message.error {
+      color: #FF6B6B;
+    }
+
+    .status-message.success {
+      color: #4ECDC4;
+    }
+
     /* Footer */
     .signup {
       display: flex;
@@ -244,7 +261,7 @@
       font-weight: 700;
       transition: all 0.2s ease;
     }
-    
+
     .signup a:hover {
       color: #FFE66D;
     }
@@ -268,16 +285,19 @@
         top: 40px;
         font-size: 28px;
       }
-      
+
       .login-card {
         width: 90%;
         padding: 40px 32px;
       }
-      
-      .login-form, .input-wrapper, input, button[type="submit"] {
+
+      .login-form,
+      .input-wrapper,
+      input,
+      button[type="submit"] {
         width: 100%;
       }
-      
+
       .tagline {
         bottom: 20px;
         font-size: 12px;
@@ -307,7 +327,7 @@
       <div class="subtitle">🔥 Ready for some fresh memes? 🔥</div>
     </div>
 
-    <form class="login-form">
+    <form class="login-form" id="loginForm">
 
       <!-- Email -->
       <div class="field">
@@ -327,8 +347,10 @@
         </div>
       </div>
 
+      <div class="status-message" id="loginStatus"></div>
+
       <!-- Button -->
-      <button type="submit">Let's Go! 🚀</button>
+      <button type="submit" id="loginSubmit">Let's Go! 🚀</button>
 
       <!-- Footer -->
       <div class="signup">
@@ -343,8 +365,9 @@
   <div class="tagline">Where Memes Live 😂</div>
 
   <script>
-    // Password eye toggle
-    document.getElementById('togglePassword').addEventListener('click', function() {
+    const LOGIN_ENDPOINT = 'https://hoev7s4i82.execute-api.us-east-1.amazonaws.com/login';
+
+    document.getElementById('togglePassword').addEventListener('click', function () {
       const passwordInput = document.getElementById('password');
       const icon = this.querySelector('i');
       if (passwordInput.type === 'password') {
@@ -358,12 +381,66 @@
       }
     });
 
-    // Handle login form submission
-    document.querySelector('.login-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      window.location.href = 'feed.html';
+    const loginForm = document.getElementById('loginForm');
+    const loginStatus = document.getElementById('loginStatus');
+    const loginSubmit = document.getElementById('loginSubmit');
+
+    const setLoginStatus = (message = '', state = '') => {
+      loginStatus.textContent = message;
+      loginStatus.classList.remove('error', 'success');
+      if (state) {
+        loginStatus.classList.add(state);
+      }
+    };
+
+    loginForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      if (!email || !password) {
+        setLoginStatus('Please enter your email and password.', 'error');
+        return;
+      }
+
+      const originalLabel = loginSubmit.textContent;
+      loginSubmit.disabled = true;
+      loginSubmit.textContent = 'Signing in…';
+      setLoginStatus('Validating credentials…');
+
+      try {
+        const response = await fetch(LOGIN_ENDPOINT, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, password })
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.error || 'Unable to sign in.');
+        }
+
+        if (result.user) {
+          localStorage.setItem('kliksyUser', JSON.stringify(result.user));
+        }
+
+        setLoginStatus('Welcome back! Redirecting…', 'success');
+        setTimeout(() => {
+          window.location.href = 'feed.html';
+        }, 600);
+      } catch (error) {
+        setLoginStatus(error.message || 'Something went wrong. Please try again.', 'error');
+      } finally {
+        loginSubmit.disabled = false;
+        loginSubmit.textContent = originalLabel;
+      }
     });
   </script>
 
 </body>
+
 </html>
