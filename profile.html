@@ -714,6 +714,23 @@
     </div>
 
     <script>
+        // Populate profile header from stored auth payload
+        function populateProfileHeader() {
+            const auth = window.kliksyAuth;
+            if (!auth || !auth.user) {
+                return;
+            }
+
+            const { username = 'Kliksy User', email = 'user@example.com' } = auth.user;
+            const avatarSource = (username || email || 'U').trim();
+
+            document.getElementById('displayUsername').textContent = username;
+            document.getElementById('displayEmail').textContent = email;
+            document.getElementById('profileAvatar').textContent = avatarSource.charAt(0).toUpperCase();
+        }
+
+        populateProfileHeader();
+
         // Filter tabs functionality
         const filterTabs = document.querySelectorAll('.filter-tab');
         const photoCards = document.querySelectorAll('.photo-card');

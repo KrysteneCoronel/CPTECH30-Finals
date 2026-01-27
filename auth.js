@@ -1,5 +1,6 @@
 (function () {
   const STORAGE_KEY = 'kliksyUser';
+  const LOGOUT_ENDPOINT = 'https://hoev7s4i82.execute-api.us-east-1.amazonaws.com/logout';
   const PUBLIC_PAGES = new Set(['', 'index.html', 'sign_up.html']);
   const PROTECTED_PAGES = new Set(['feed.html', 'profile.html', 'upload.html']);
 
@@ -30,19 +31,25 @@
     window.location.href = target;
   };
 
-  const page = getCurrentPage();
-  const user = safeParseUser();
-  const isLoggedIn = Boolean(user);
+  const enforceAccess = () => {
+    const page = getCurrentPage();
+    const isLoggedIn = Boolean(safeParseUser());
 
-  if (PROTECTED_PAGES.has(page) && !isLoggedIn) {
-    redirectTo('index.html');
-    return;
-  }
+    if (PROTECTED_PAGES.has(page) && !isLoggedIn) {
+      redirectTo('index.html');
+      return true;
+    }
 
-  if (PUBLIC_PAGES.has(page) && isLoggedIn) {
-    redirectTo('feed.html');
-    return;
-  }
+    if (PUBLIC_PAGES.has(page) && isLoggedIn) {
+      redirectTo('feed.html');
+      return true;
+    }
+
+    return false;
+  };
+
+  enforceAccess();
+  window.addEventListener('pageshow', enforceAccess);
 
   window.kliksyAuth = {
     storageKey: STORAGE_KEY,
@@ -52,7 +59,26 @@
     get isLoggedIn() {
       return Boolean(safeParseUser());
     },
-    logout(target = 'index.html') {
+    async logout(target = 'index.html') {
+      const user = safeParseUser();
+
+      if (LOGOUT_ENDPOINT && user) {
+        try {
+          await fetch(LOGOUT_ENDPOINT, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              email: user.email,
+              username: user.username,
+            }),
+          });
+        } catch (error) {
+          console.warn('logout audit failed', error);
+        }
+      }
+
       localStorage.removeItem(STORAGE_KEY);
       redirectTo(target);
     }
