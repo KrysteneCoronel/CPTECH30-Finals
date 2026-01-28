@@ -61,140 +61,40 @@
             padding: 10px 20px;
             border-radius: 12px;
             transition: all 0.3s ease;
-            font-size: 15px;
             text-transform: uppercase;
+            font-size: 15px;
             letter-spacing: 0.05em;
-            text-decoration: none;
         }
 
+        .nav-links a:hover,
         .nav-links a.active {
             color: #FFFFFF;
-            background: linear-gradient(135deg, rgba(255, 107, 107, 0.3) 0%, rgba(78, 205, 196, 0.3) 100%);
+            background: rgba(255, 255, 255, 0.12);
         }
 
-        .nav-links a:hover {
-            color: #FFFFFF;
-            background: rgba(255, 107, 107, 0.2);
-        }
-
-        /* Logout button */
-        .logout-btn {
-            background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
-            padding: 10px 24px;
-            border-radius: 12px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            border: none;
-            color: white;
-            cursor: pointer;
-            text-transform: uppercase;
-            font-size: 13px;
-            letter-spacing: 0.05em;
-            position: absolute;
-            top: 48px;
-            right: 48px;
-        }
-
-        /* Main content */
-        main {
-            position: relative;
-            z-index: 5;
-            padding: 60px 32px 80px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        /* Profile Header Card */
-        .profile-header {
-            background: linear-gradient(135deg, #1a0b2e 0%, #0f0520 100%);
-            border-radius: 24px;
-            border: 2px solid rgba(255, 107, 107, 0.3);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-            padding: 48px;
-            margin-bottom: 48px;
-            position: relative;
-        }
-
-        .profile-avatar {
-            width: 128px;
-            height: 128px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #FF6B6B 0%, #4ECDC4 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 56px;
-            font-weight: 900;
-            color: white;
-            box-shadow: 0 8px 32px rgba(255, 107, 107, 0.5);
-        }
-
-        .profile-username {
-            font-size: 36px;
-            font-weight: 900;
-            background: linear-gradient(135deg, #FFFFFF 0%, #FFE66D 50%, #FF6B6B 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 8px;
-        }
-
-        .profile-email {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 24px;
-        }
-
-        .stats-container {
-            display: flex;
-            gap: 32px;
-            margin-bottom: 24px;
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 32px;
-            font-weight: 900;
-            background: linear-gradient(135deg, #FF6B6B 0%, #FFE66D 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .stat-label {
-            font-size: 13px;
-            color: rgba(255, 255, 255, 0.6);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .member-since {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 24px;
-        }
-
-        .member-since i {
-            color: #4ECDC4;
-            margin-right: 8px;
-        }
-
-        /* Filter Tabs */
         .filter-tabs {
             display: flex;
             justify-content: center;
             gap: 12px;
-            margin-bottom: 48px;
+            margin: 48px auto;
             flex-wrap: wrap;
+            max-width: 900px;
+        }
+
+        .status-message {
+            text-align: center;
+            margin: 16px auto 32px;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 600;
+            letter-spacing: 0.03em;
+        }
+
+        .status-message.error {
+            color: #FF6B6B;
+        }
+
+        .status-message.success {
+            color: #4ECDC4;
         }
 
         .filter-tab {
@@ -603,135 +503,10 @@
                 <i class="fas fa-lock"></i> Private
             </div>
         </div>
+        <p id="profileStatus" class="status-message" role="status" aria-live="polite"></p>
 
         <!-- My Photos Grid -->
-        <div class="grid grid-cols-1 sm-grid-cols-2 lg-grid-cols-3 xl-grid-cols-4 gap-6" id="photosGrid">
-            <!-- Photo Card 1 (Public) -->
-            <div class="photo-card" data-privacy="public">
-                <div class="privacy-badge public">
-                    <i class="fas fa-globe"></i> Public
-                </div>
-                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop"
-                    alt="My Photo">
-                <div class="photo-overlay">
-                    <button class="overlay-btn view" onclick="openModal(this)">
-                        <i class="fas fa-eye"></i>
-                    </button>
-                    <button class="overlay-btn delete" onclick="deletePhoto(this)">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-                <div class="photo-info">
-                    <p class="photo-description">Beautiful mountain sunrise 🌄</p>
-                    <p class="photo-timestamp">2 days ago</p>
-                </div>
-            </div>
-
-            <!-- Photo Card 2 (Private) -->
-            <div class="photo-card" data-privacy="private">
-                <div class="privacy-badge private">
-                    <i class="fas fa-lock"></i> Private
-                </div>
-                <img src="https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=400&h=400&fit=crop"
-                    alt="My Photo">
-                <div class="photo-overlay">
-                    <button class="overlay-btn view" onclick="openModal(this)">
-                        <i class="fas fa-eye"></i>
-                    </button>
-                    <button class="overlay-btn delete" onclick="deletePhoto(this)">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-                <div class="photo-info">
-                    <p class="photo-description">My adorable pet cat 😺</p>
-                    <p class="photo-timestamp">3 days ago</p>
-                </div>
-            </div>
-
-            <!-- Photo Card 3 (Public) -->
-            <div class="photo-card" data-privacy="public">
-                <div class="privacy-badge public">
-                    <i class="fas fa-globe"></i> Public
-                </div>
-                <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&h=400&fit=crop"
-                    alt="My Photo">
-                <div class="photo-overlay">
-                    <button class="overlay-btn view" onclick="openModal(this)">
-                        <i class="fas fa-eye"></i>
-                    </button>
-                    <button class="overlay-btn delete" onclick="deletePhoto(this)">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-                <div class="photo-info">
-                    <p class="photo-description">Homemade pasta dinner 🍝</p>
-                    <p class="photo-timestamp">5 days ago</p>
-                </div>
-            </div>
-
-            <!-- Photo Card 4 (Public) -->
-            <div class="photo-card" data-privacy="public">
-                <div class="privacy-badge public">
-                    <i class="fas fa-globe"></i> Public
-                </div>
-                <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&h=400&fit=crop"
-                    alt="My Photo">
-                <div class="photo-overlay">
-                    <button class="overlay-btn view" onclick="openModal(this)">
-                        <i class="fas fa-eye"></i>
-                    </button>
-                    <button class="overlay-btn delete" onclick="deletePhoto(this)">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-                <div class="photo-info">
-                    <p class="photo-description">Sunset by the lake 🌅</p>
-                    <p class="photo-timestamp">1 week ago</p>
-                </div>
-            </div>
-
-            <!-- Photo Card 5 (Private) -->
-            <div class="photo-card" data-privacy="private">
-                <div class="privacy-badge private">
-                    <i class="fas fa-lock"></i> Private
-                </div>
-                <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=400&h=400&fit=crop"
-                    alt="My Photo">
-                <div class="photo-overlay">
-                    <button class="overlay-btn view" onclick="openModal(this)">
-                        <i class="fas fa-eye"></i>
-                    </button>
-                    <button class="overlay-btn delete" onclick="deletePhoto(this)">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-                <div class="photo-info">
-                    <p class="photo-description">Forest hiking trail 🌲</p>
-                    <p class="photo-timestamp">1 week ago</p>
-                </div>
-            </div>
-
-            <!-- Photo Card 6 (Public) -->
-            <div class="photo-card" data-privacy="public">
-                <div class="privacy-badge public">
-                    <i class="fas fa-globe"></i> Public
-                </div>
-                <img src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=400&h=400&fit=crop"
-                    alt="My Photo">
-                <div class="photo-overlay">
-                    <button class="overlay-btn view" onclick="openModal(this)">
-                        <i class="fas fa-eye"></i>
-                    </button>
-                    <button class="overlay-btn delete" onclick="deletePhoto(this)">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-                <div class="photo-info">
-                    <p class="photo-description">Amazing concert experience 🎵</p>
-                    <p class="photo-timestamp">2 weeks ago</p>
-                </div>
-            </div>
-        </div>
+        <div class="grid grid-cols-1 sm-grid-cols-2 lg-grid-cols-3 xl-grid-cols-4 gap-6" id="photosGrid"></div>
 
         <!-- Empty State -->
         <div id="emptyState" class="empty-state hidden">
@@ -763,6 +538,16 @@
     </div>
 
     <script>
+        const PROFILE_MEMES_ENDPOINT = 'https://hoev7s4i82.execute-api.us-east-1.amazonaws.com/profile/memes';
+        const PROFILE_PLACEHOLDER_IMAGE = 'https://via.placeholder.com/800x800/140a28/FFFFFF?text=KLIKSY';
+
+        const filterTabs = document.querySelectorAll('.filter-tab');
+        const photosGrid = document.getElementById('photosGrid');
+        const emptyState = document.getElementById('emptyState');
+        const profileStatus = document.getElementById('profileStatus');
+
+        let currentCard = null;
+
         // Populate profile header from stored auth payload
         function populateProfileHeader() {
             const auth = window.kliksyAuth;
@@ -778,74 +563,179 @@
             document.getElementById('profileAvatar').textContent = avatarSource.charAt(0).toUpperCase();
         }
 
-        populateProfileHeader();
+        const setProfileStatus = (message = '', type = '') => {
+            profileStatus.textContent = message;
+            profileStatus.classList.remove('error', 'success');
+            if (type) {
+                profileStatus.classList.add(type);
+            }
+            profileStatus.style.display = message ? 'block' : 'none';
+        };
 
-        // Filter tabs functionality
-        const filterTabs = document.querySelectorAll('.filter-tab');
-        const photoCards = document.querySelectorAll('.photo-card');
-        const emptyState = document.getElementById('emptyState');
-        const photosGrid = document.getElementById('photosGrid');
+        const normalizeToUTCString = (value) => {
+            if (!value || typeof value !== 'string') return value;
+            if (value.endsWith('Z') || value.includes('+')) {
+                return value;
+            }
+            return `${value}Z`;
+        };
 
-        // Make photo cards clickable to view
-        photoCards.forEach(card => {
-            card.addEventListener('click', function (e) {
-                // Don't open if clicking delete button
-                if (e.target.closest('.overlay-btn.delete')) {
-                    return;
-                }
-                openModal(card.querySelector('.overlay-btn.delete'));
+        const formatPhilippineDate = (input) => {
+            const normalized = typeof input === 'string' ? normalizeToUTCString(input) : input;
+            const date = normalized ? new Date(normalized) : new Date();
+            if (Number.isNaN(date.getTime())) {
+                return 'Date unavailable';
+            }
+            return new Intl.DateTimeFormat('en-PH', {
+                timeZone: 'Asia/Manila',
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            }).format(date);
+        };
+
+        function buildMemeCard(meme) {
+            const card = document.createElement('div');
+            card.className = 'photo-card';
+            card.dataset.privacy = meme.privacy;
+            card.dataset.memeId = meme.id;
+
+            const badge = document.createElement('div');
+            const isPublic = meme.privacy === 'public';
+            badge.className = `privacy-badge ${isPublic ? 'public' : 'private'}`;
+            badge.innerHTML = `<i class="fas ${isPublic ? 'fa-globe' : 'fa-lock'}"></i> ${isPublic ? 'Public' : 'Private'}`;
+            card.appendChild(badge);
+
+            const img = document.createElement('img');
+            img.src = meme.fileUrl || PROFILE_PLACEHOLDER_IMAGE;
+            img.alt = meme.description || 'Kliksy meme';
+            card.appendChild(img);
+
+            const overlay = document.createElement('div');
+            overlay.className = 'photo-overlay';
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'overlay-btn delete';
+            deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
+            deleteBtn.addEventListener('click', (event) => {
+                event.stopPropagation();
+                handleDelete(card);
             });
-        });
+            overlay.appendChild(deleteBtn);
+            card.appendChild(overlay);
 
-        filterTabs.forEach(tab => {
-            tab.addEventListener('click', function () {
-                // Remove active class from all tabs
-                filterTabs.forEach(t => t.classList.remove('active'));
+            const info = document.createElement('div');
+            info.className = 'photo-info';
+            const description = document.createElement('p');
+            description.className = 'photo-description';
+            description.textContent = meme.description || 'Shared a fresh meme.';
+            const timestamp = document.createElement('p');
+            timestamp.className = 'photo-timestamp';
+            const formattedDate = formatPhilippineDate(meme.createdAt);
+            timestamp.textContent = formattedDate;
+            timestamp.dataset.timestamp = meme.createdAt || '';
+            info.appendChild(description);
+            info.appendChild(timestamp);
+            card.appendChild(info);
 
-                // Add active class to clicked tab
-                this.classList.add('active');
+            card.addEventListener('click', () => {
+                openModal(card);
+            });
 
-                // Get filter value
-                const filter = this.getAttribute('data-filter');
+            return card;
+        }
 
-                // Filter photos
-                let visibleCount = 0;
-                photoCards.forEach(card => {
-                    const privacy = card.getAttribute('data-privacy');
+        function renderProfileMemes(payload) {
+            const items = payload?.items || [];
+            photosGrid.innerHTML = '';
 
-                    if (filter === 'all' || filter === privacy) {
-                        card.style.display = 'block';
-                        visibleCount++;
-                    } else {
-                        card.style.display = 'none';
+            document.getElementById('totalMemes').textContent = payload?.stats?.total ?? items.length;
+            document.getElementById('publicMemes').textContent = payload?.stats?.public ?? 0;
+            document.getElementById('privateMemes').textContent = payload?.stats?.private ?? 0;
+
+            if (!items.length) {
+                emptyState.classList.remove('hidden');
+                photosGrid.style.display = 'none';
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            photosGrid.style.display = 'grid';
+
+            const fragment = document.createDocumentFragment();
+            items.forEach((meme) => fragment.appendChild(buildMemeCard(meme)));
+            photosGrid.appendChild(fragment);
+
+            applyFilter(getActiveFilter());
+        }
+
+        function getActiveFilter() {
+            const activeTab = document.querySelector('.filter-tab.active');
+            return activeTab ? activeTab.getAttribute('data-filter') : 'all';
+        }
+
+        function applyFilter(filter) {
+            const cards = photosGrid.querySelectorAll('.photo-card');
+            let visibleCount = 0;
+
+            cards.forEach((card) => {
+                const matches = filter === 'all' || card.getAttribute('data-privacy') === filter;
+                card.style.display = matches ? 'block' : 'none';
+                if (matches) visibleCount += 1;
+            });
+
+            if (visibleCount === 0) {
+                emptyState.classList.remove('hidden');
+                photosGrid.style.display = 'none';
+            } else {
+                emptyState.classList.add('hidden');
+                photosGrid.style.display = 'grid';
+            }
+        }
+
+        async function loadProfileMemes() {
+            const user = window.kliksyAuth?.user;
+            if (!user) {
+                setProfileStatus('Please sign in again to view your profile.', 'error');
+                return;
+            }
+
+            setProfileStatus('Loading your memes…');
+            try {
+                const url = new URL(PROFILE_MEMES_ENDPOINT);
+                url.searchParams.set('email', user.email);
+
+                const response = await fetch(url.toString(), {
+                    headers: {
+                        'Content-Type': 'application/json'
                     }
                 });
 
-                // Show/hide empty state
-                if (visibleCount === 0) {
-                    emptyState.classList.remove('hidden');
-                    photosGrid.style.display = 'none';
-                } else {
-                    emptyState.classList.add('hidden');
-                    photosGrid.style.display = 'grid';
+                if (!response.ok) {
+                    throw new Error('Unable to load your profile right now.');
                 }
-            });
-        });
 
-        // Photo Modal functionality
-        let currentCard = null;
+                const payload = await response.json();
+                renderProfileMemes(payload);
+                setProfileStatus('');
+            } catch (error) {
+                console.error('Profile load error:', error);
+                setProfileStatus(error.message || 'Something went wrong while loading your profile.', 'error');
+            }
+        }
 
-        function openModal(button) {
-            currentCard = button.closest('.photo-card');
+        function openModal(card) {
+            currentCard = card;
             const modal = document.getElementById('photoModal');
-            const img = currentCard.querySelector('img');
-            const description = currentCard.querySelector('.photo-description').textContent;
-            const timestamp = currentCard.querySelector('.photo-timestamp').textContent;
-            const privacy = currentCard.getAttribute('data-privacy');
+            const img = card.querySelector('img');
+            const description = card.querySelector('.photo-description').textContent;
+            const timestamp = card.querySelector('.photo-timestamp').dataset.timestamp || card.querySelector('.photo-timestamp').textContent;
+            const privacy = card.getAttribute('data-privacy');
 
             document.getElementById('modalImage').src = img.src;
             document.getElementById('modalDescription').textContent = description;
-            document.getElementById('modalTimestamp').textContent = timestamp;
+            document.getElementById('modalTimestamp').textContent = formatPhilippineDate(timestamp);
 
             const modalPrivacy = document.getElementById('modalPrivacy');
             if (privacy === 'public') {
@@ -864,80 +754,60 @@
             currentCard = null;
         }
 
-        function deletePhoto(button) {
-            if (confirm('Are you sure you want to delete this meme? 🗑️')) {
-                const card = button.closest('.photo-card');
-                card.style.opacity = '0';
-                card.style.transform = 'scale(0.8)';
-
-                setTimeout(() => {
-                    card.remove();
-                    updateStats();
-
-                    // Check if we need to show empty state
-                    const remainingCards = document.querySelectorAll('.photo-card');
-                    const activeFilter = document.querySelector('.filter-tab.active').getAttribute('data-filter');
-                    const visibleCards = Array.from(remainingCards).filter(c => {
-                        return activeFilter === 'all' || c.getAttribute('data-privacy') === activeFilter;
-                    });
-
-                    if (visibleCards.length === 0) {
-                        emptyState.classList.remove('hidden');
-                        photosGrid.style.display = 'none';
-                    }
-                }, 300);
+        function handleDelete(card) {
+            if (!confirm('Are you sure you want to delete this meme? 🗑️')) {
+                return;
             }
+
+            card.style.opacity = '0';
+            card.style.transform = 'scale(0.8)';
+            setTimeout(() => {
+                card.remove();
+                updateStats();
+                applyFilter(getActiveFilter());
+            }, 300);
         }
 
         function deleteCurrentPhoto() {
-            if (currentCard && confirm('Are you sure you want to delete this meme? 🗑️')) {
-                closePhotoModal();
-                currentCard.style.opacity = '0';
-                currentCard.style.transform = 'scale(0.8)';
-
-                setTimeout(() => {
-                    currentCard.remove();
-                    updateStats();
-
-                    // Check if we need to show empty state
-                    const remainingCards = document.querySelectorAll('.photo-card');
-                    const activeFilter = document.querySelector('.filter-tab.active').getAttribute('data-filter');
-                    const visibleCards = Array.from(remainingCards).filter(c => {
-                        return activeFilter === 'all' || c.getAttribute('data-privacy') === activeFilter;
-                    });
-
-                    if (visibleCards.length === 0) {
-                        emptyState.classList.remove('hidden');
-                        photosGrid.style.display = 'none';
-                    }
-                }, 300);
+            if (!currentCard) {
+                return;
             }
+            closePhotoModal();
+            handleDelete(currentCard);
         }
 
-        // Update stats after deletion
         function updateStats() {
-            const allCards = document.querySelectorAll('.photo-card');
-            const publicCards = Array.from(allCards).filter(c => c.getAttribute('data-privacy') === 'public');
-            const privateCards = Array.from(allCards).filter(c => c.getAttribute('data-privacy') === 'private');
+            const allCards = photosGrid.querySelectorAll('.photo-card');
+            const publicCards = Array.from(allCards).filter((c) => c.getAttribute('data-privacy') === 'public');
+            const privateCards = Array.from(allCards).filter((c) => c.getAttribute('data-privacy') === 'private');
 
             document.getElementById('totalMemes').textContent = allCards.length;
             document.getElementById('publicMemes').textContent = publicCards.length;
             document.getElementById('privateMemes').textContent = privateCards.length;
         }
 
-        // Close modals when clicking outside
+        filterTabs.forEach((tab) => {
+            tab.addEventListener('click', function handleTabClick() {
+                filterTabs.forEach((t) => t.classList.remove('active'));
+                this.classList.add('active');
+                applyFilter(this.getAttribute('data-filter'));
+            });
+        });
+
         document.getElementById('photoModal').addEventListener('click', function (e) {
             if (e.target === this) {
                 closePhotoModal();
             }
         });
 
-        // Close modals with Escape key
         document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape') {
                 closePhotoModal();
             }
         });
+
+        populateProfileHeader();
+        loadProfileMemes();
     </script>
 </body>
 
