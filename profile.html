@@ -343,16 +343,15 @@
             text-transform: uppercase;
         }
 
-        .pagination-controls {
+        .pagination {
             display: flex;
             justify-content: center;
-            align-items: center;
             gap: 12px;
             margin-top: 60px;
             flex-wrap: wrap;
         }
 
-        .pagination-btn {
+        .page-btn {
             padding: 10px 14px;
             border-radius: 8px;
             background: rgba(255, 255, 255, 0.05);
@@ -364,39 +363,29 @@
             transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
         }
 
-        .pagination-btn:hover:not(:disabled) {
+        .page-btn:hover {
             background: rgba(255, 107, 107, 0.2);
             border-color: #FF6B6B;
             color: #FFFFFF;
         }
 
-        .pagination-btn:disabled {
+        .page-btn:disabled {
             opacity: 0.35;
             cursor: not-allowed;
             border-color: rgba(255, 255, 255, 0.1);
         }
 
-        .pagination-btn.active {
+        .page-btn.active {
             background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
             border-color: #FF6B6B;
             color: #FFFFFF;
         }
 
-        .pagination-btn.prev-btn,
-        .pagination-btn.next-btn {
+        .page-btn.prev-btn,
+        .page-btn.next-btn {
             padding: 10px 12px;
-        }
-
-        .pagination-info {
-            font-weight: 800;
-            letter-spacing: 0.06em;
-            color: rgba(255, 255, 255, 0.75);
-            text-transform: uppercase;
         }
 
         .empty-state {
@@ -685,17 +674,7 @@
 
         <div class="grid grid-cols-1 sm-grid-cols-2 lg-grid-cols-3 xl-grid-cols-4 gap-6" id="photosGrid"></div>
 
-        <div id="paginationControls" class="pagination-controls hidden" aria-live="polite">
-            <button type="button" id="prevPage" class="pagination-btn prev-btn">
-                <i class="fas fa-arrow-left"></i>
-                Prev
-            </button>
-            <span id="pageInfo" class="pagination-info">Page 1 of 1</span>
-            <button type="button" id="nextPage" class="pagination-btn next-btn">
-                Next
-                <i class="fas fa-arrow-right"></i>
-            </button>
-        </div>
+        <div id="paginationControls" class="pagination hidden" aria-label="Profile pagination" aria-live="polite"></div>
 
         <div id="emptyState" class="empty-state hidden">
             <i class="fas fa-images"></i>
@@ -725,6 +704,7 @@
 
     <script>
         const PROFILE_MEMES_ENDPOINT = 'https://hoev7s4i82.execute-api.us-east-1.amazonaws.com/profile/memes';
+        const PROFILE_DELETE_ENDPOINT = 'https://hoev7s4i82.execute-api.us-east-1.amazonaws.com/delete';
         const PROFILE_PLACEHOLDER_IMAGE = 'https://via.placeholder.com/800x800/140a28/FFFFFF?text=KLIKSY';
 
         const filterTabs = document.querySelectorAll('.filter-tab');
@@ -732,11 +712,9 @@
         const emptyState = document.getElementById('emptyState');
         const profileStatus = document.getElementById('profileStatus');
         const paginationControls = document.getElementById('paginationControls');
-        const prevPageBtn = document.getElementById('prevPage');
-        const nextPageBtn = document.getElementById('nextPage');
-        const pageInfo = document.getElementById('pageInfo');
 
         let currentCard = null;
+        let isDeletingMeme = false;
         const profilePagination = {
             page: 1,
             totalPages: 1,
@@ -860,7 +838,7 @@
             if (!items.length) {
                 emptyState.classList.remove('hidden');
                 photosGrid.style.display = 'none';
-                updatePaginationControls({ totalPages: 1, page: 1 });
+                renderPaginationControls({ totalPages: 1, page: 1, totalItems: 0 });
                 return;
             }
 
@@ -872,11 +850,11 @@
             photosGrid.appendChild(fragment);
 
             applyFilter(getActiveFilter());
-            updatePaginationControls(payload?.pagination || {});
+            renderPaginationControls(payload?.pagination || {});
         }
 
-        function updatePaginationControls(pagination = {}) {
-            if (!paginationControls || !prevPageBtn || !nextPageBtn || !pageInfo) {
+        function renderPaginationControls(pagination = {}) {
+            if (!paginationControls) {
                 return;
             }
 
@@ -885,8 +863,10 @@
 
             profilePagination.totalPages = totalPages;
             profilePagination.page = currentPage;
-            profilePagination.totalItems = pagination.totalItems ?? profilePagination.totalItems;
+            profilePagination.totalItems = pagination.totalItems ?? profilePagination.totalItems ?? 0;
             profilePagination.pageSize = pagination.pageSize ?? profilePagination.pageSize;
+
+            paginationControls.innerHTML = '';
 
             if (totalPages <= 1) {
                 paginationControls.classList.add('hidden');
@@ -894,9 +874,37 @@
             }
 
             paginationControls.classList.remove('hidden');
-            pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
-            prevPageBtn.disabled = currentPage <= 1;
-            nextPageBtn.disabled = currentPage >= totalPages;
+
+            const createButton = (label, targetPage, extraClass = '', disabled = false, isActive = false) => {
+                const button = document.createElement('button');
+                button.className = `page-btn ${extraClass}`.trim();
+                button.innerHTML = label;
+                button.disabled = disabled;
+                if (isActive) {
+                    button.classList.add('active');
+                }
+                button.addEventListener('click', () => {
+                    if (disabled || targetPage === profilePagination.page) {
+                        return;
+                    }
+                    loadProfileMemes(targetPage);
+                });
+                return button;
+            };
+
+            paginationControls.appendChild(
+                createButton('<i class="fas fa-chevron-left"></i>', Math.max(1, currentPage - 1), 'prev-btn', currentPage === 1)
+            );
+
+            for (let page = 1; page <= totalPages; page += 1) {
+                paginationControls.appendChild(
+                    createButton(String(page), page, '', false, page === currentPage)
+                );
+            }
+
+            paginationControls.appendChild(
+                createButton('<i class="fas fa-chevron-right"></i>', Math.min(totalPages, currentPage + 1), 'next-btn', currentPage === totalPages)
+            );
         }
 
         function getActiveFilter() {
@@ -963,7 +971,7 @@
                 photosGrid.innerHTML = '';
                 emptyState.classList.remove('hidden');
                 photosGrid.style.display = 'none';
-                updatePaginationControls({ totalPages: 1, page: 1 });
+                renderPaginationControls({ totalPages: 1, page: 1, totalItems: 0 });
             }
         }
 
@@ -997,26 +1005,84 @@
             currentCard = null;
         }
 
-        function handleDelete(card) {
+        async function handleDelete(card) {
+            if (!card || isDeletingMeme) {
+                return;
+            }
+
+            const memeIdValue = Number(card.getAttribute('data-meme-id') || card.dataset.memeId);
+            if (!Number.isFinite(memeIdValue) || memeIdValue <= 0) {
+                setProfileStatus('Unable to determine which meme to delete.', 'error');
+                return;
+            }
+
+            const authUser = window.kliksyAuth?.user;
+            const identifier = (authUser?.email || authUser?.username || '').trim();
+            if (!identifier) {
+                setProfileStatus('Please sign in again before deleting memes.', 'error');
+                return;
+            }
+
             if (!confirm('Are you sure you want to delete this meme? 🗑️')) {
                 return;
             }
 
-            card.style.opacity = '0';
-            card.style.transform = 'scale(0.8)';
-            setTimeout(() => {
-                card.remove();
-                updateStats();
-                applyFilter(getActiveFilter());
-            }, 300);
+            const deletePayload = { memeId: memeIdValue };
+            if (authUser.email) {
+                deletePayload.email = authUser.email;
+            }
+            if (authUser.username) {
+                deletePayload.username = authUser.username;
+            }
+
+            try {
+                isDeletingMeme = true;
+                card.style.opacity = '0.4';
+                card.style.pointerEvents = 'none';
+                setProfileStatus('Deleting meme…');
+
+                const response = await fetch(PROFILE_DELETE_ENDPOINT, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(deletePayload)
+                });
+
+                const payload = await response.json().catch(() => ({}));
+                if (!response.ok) {
+                    throw new Error(payload?.error || 'Unable to delete meme.');
+                }
+
+                const requestedPage = profilePagination.page;
+                await loadProfileMemes(requestedPage);
+
+                if (
+                    profilePagination.totalItems > 0 &&
+                    profilePagination.page < requestedPage
+                ) {
+                    const fallbackPage = profilePagination.page;
+                    await loadProfileMemes(fallbackPage);
+                }
+
+                setProfileStatus('Meme deleted successfully.', 'success');
+            } catch (error) {
+                console.error('Delete meme error:', error);
+                setProfileStatus(error.message || 'Unable to delete meme.', 'error');
+            } finally {
+                isDeletingMeme = false;
+                card.style.opacity = '';
+                card.style.pointerEvents = '';
+            }
         }
 
-        function deleteCurrentPhoto() {
+        async function deleteCurrentPhoto() {
             if (!currentCard) {
                 return;
             }
+            const cardToDelete = currentCard;
             closePhotoModal();
-            handleDelete(currentCard);
+            await handleDelete(cardToDelete);
         }
 
         function updateStats() {
@@ -1036,20 +1102,6 @@
                 applyFilter(this.getAttribute('data-filter'));
             });
         });
-
-        if (prevPageBtn && nextPageBtn) {
-            prevPageBtn.addEventListener('click', () => {
-                if (profilePagination.page > 1) {
-                    loadProfileMemes(profilePagination.page - 1);
-                }
-            });
-
-            nextPageBtn.addEventListener('click', () => {
-                if (profilePagination.page < profilePagination.totalPages) {
-                    loadProfileMemes(profilePagination.page + 1);
-                }
-            });
-        }
 
         document.getElementById('photoModal').addEventListener('click', function (event) {
             if (event.target === this) {
