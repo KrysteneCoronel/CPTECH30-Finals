@@ -190,12 +190,34 @@
 
 
         /* Preview */
-        .preview-container img {
-            max-width: 100%;
-            max-height: 400px;
+        .preview-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .preview-frame {
+            width: 100%;
+            max-width: 520px;
+            min-height: 280px;
+            padding: 16px;
+            border-radius: 20px;
+            border: 2px solid rgba(255, 107, 107, 0.15);
+            background: linear-gradient(135deg, rgba(10, 14, 39, 0.65), rgba(21, 11, 35, 0.8));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .preview-frame img {
+            width: 100%;
+            height: 100%;
+            max-height: 420px;
+            object-fit: contain;
             border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            margin-bottom: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
         }
 
         .remove-btn {
@@ -208,6 +230,10 @@
             border: 2px solid rgba(255, 107, 107, 0.3);
             cursor: pointer;
             transition: all 0.3s ease;
+        }
+
+        .preview-container .remove-btn {
+            align-self: center;
         }
 
         .remove-btn:hover {
@@ -376,6 +402,22 @@
             margin-right: 8px;
         }
 
+        .status-message {
+            min-height: 24px;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .status-message.error {
+            color: #FF6B6B;
+        }
+
+        .status-message.success {
+            color: #4ECDC4;
+        }
+
         /* Utility classes */
         .space-y-6>*+* {
             margin-top: 24px;
@@ -486,7 +528,9 @@
 
                         <!-- Preview Area (hidden initially) -->
                         <div id="previewArea" class="hidden preview-container">
-                            <img id="imagePreview" src="" alt="Preview">
+                            <div class="preview-frame">
+                                <img id="imagePreview" src="" alt="Preview">
+                            </div>
                             <button type="button" id="removeImage" class="remove-btn">
                                 <i class="fas fa-times-circle"></i> Remove Image
                             </button>
@@ -531,6 +575,8 @@
                     </p>
                 </div>
 
+                <div id="uploadStatus" class="status-message" role="status" aria-live="polite"></div>
+
                 <!-- Action Buttons -->
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding-top: 16px;">
                     <button type="submit" class="submit-btn">
@@ -559,6 +605,9 @@
 
 
     <script>
+        const UPLOAD_ENDPOINT = 'https://hoev7s4i82.execute-api.us-east-1.amazonaws.com/upload';
+        const MAX_UPLOAD_BYTES = 10 * 1024 * 1024; // 10MB cap to match Lambda default
+
         const dropArea = document.getElementById('dropArea');
         const fileInput = document.getElementById('fileInput');
         const uploadPlaceholder = document.getElementById('uploadPlaceholder');
@@ -570,6 +619,9 @@
         const publicLabel = document.getElementById('publicLabel');
         const privateLabel = document.getElementById('privateLabel');
         const privacyHint = document.getElementById('privacyHint');
+        const uploadStatus = document.getElementById('uploadStatus');
+        const uploadForm = document.getElementById('uploadForm');
+        const submitBtn = document.querySelector('.submit-btn');
 
         // Character counter for description
         descriptionTextarea.addEventListener('input', function () {
@@ -648,30 +700,102 @@
         });
 
         // Handle form submission
-        document.getElementById('uploadForm').addEventListener('submit', function (e) {
+        const setStatus = (message = '', type = '') => {
+            uploadStatus.textContent = message;
+            uploadStatus.classList.remove('error', 'success');
+            if (type) {
+                uploadStatus.classList.add(type);
+            }
+        };
+
+        const fileToBase64 = (file) => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+                const result = reader.result;
+                const base64 = typeof result === 'string' ? result.split(',').pop() : '';
+                resolve(base64);
+            };
+            reader.onerror = () => reject(reader.error || new Error('Failed to read file.'));
+            reader.readAsDataURL(file);
+        });
+
+        const formatBytes = (bytes) => {
+            if (!bytes && bytes !== 0) return '';
+            const units = ['B', 'KB', 'MB', 'GB'];
+            let value = bytes;
+            let unitIndex = 0;
+            while (value >= 1024 && unitIndex < units.length - 1) {
+                value /= 1024;
+                unitIndex++;
+            }
+            return `${value.toFixed(unitIndex === 0 ? 0 : 1)} ${units[unitIndex]}`;
+        };
+
+        uploadForm.addEventListener('submit', async function (e) {
             e.preventDefault();
 
             const file = fileInput.files[0];
-            const description = descriptionTextarea.value;
+            const description = descriptionTextarea.value.trim();
             const privacy = document.querySelector('input[name="privacy"]:checked').value;
+            const user = window.kliksyAuth?.user;
 
-            if (!file) {
-                alert('Please select a meme to upload 🔥');
+            if (!user) {
+                setStatus('Your session expired. Please log in again.', 'error');
+                setTimeout(() => window.location.href = 'index.html', 800);
                 return;
             }
 
-            // TODO: Connect to Lambda function via API Gateway
-            // Will upload to S3 and store metadata in RDS
-            console.log('Upload attempt:', {
-                file: file.name,
-                size: file.size,
-                description,
-                privacy
-            });
+            if (!file) {
+                setStatus('Please select a meme to upload 🔥', 'error');
+                return;
+            }
 
-            // Placeholder: Show success message
-            alert(`Meme uploaded successfully as ${privacy}! 🎉\n\nThis will be connected to AWS Lambda and S3.`);
-            // window.location.href = 'feed.html';
+            if (file.size > MAX_UPLOAD_BYTES) {
+                setStatus(`File is too large. Max allowed is ${formatBytes(MAX_UPLOAD_BYTES)}.`, 'error');
+                return;
+            }
+
+            try {
+                const base64Data = await fileToBase64(file);
+                const payload = {
+                    email: user.email,
+                    description,
+                    privacy,
+                    file: {
+                        contentType: file.type || 'application/octet-stream',
+                        sizeBytes: file.size,
+                        data: base64Data,
+                    }
+                };
+
+                const originalLabel = submitBtn.innerHTML;
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-hourglass-half"></i> Uploading…';
+                setStatus('Uploading to Kliksy cloud…');
+
+                const response = await fetch(UPLOAD_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json().catch(() => ({}));
+
+                if (!response.ok) {
+                    throw new Error(result.error || 'Upload failed.');
+                }
+
+                setStatus('Meme uploaded successfully! Redirecting…', 'success');
+                setTimeout(() => window.location.href = 'feed.html', 1200);
+            } catch (error) {
+                console.error('Upload error:', error);
+                setStatus(error.message || 'Something went wrong. Please try again.', 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-upload"></i> Upload Meme';
+            }
         });
     </script>
 </body>

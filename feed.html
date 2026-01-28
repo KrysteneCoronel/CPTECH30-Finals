@@ -247,37 +247,19 @@
       margin-bottom: 12px;
     }
 
-    .meme-card .reactions {
-      display: flex;
-      gap: 16px;
-      align-items: center;
-    }
-
-    .meme-card .reaction-btn {
+    .meme-card .meta-row {
       display: flex;
       align-items: center;
-      gap: 6px;
-      font-size: 20px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      color: rgba(255, 255, 255, 0.6);
-    }
-
-    .meme-card .reaction-btn span {
+      gap: 8px;
       font-size: 13px;
-      font-weight: 600;
-      color: rgba(255, 255, 255, 0.8);
-    }
-
-    .meme-card .reaction-btn:hover {
-      transform: scale(1.2);
+      color: rgba(255, 255, 255, 0.65);
+      letter-spacing: 0.02em;
     }
 
     .meme-card .timestamp {
       font-size: 11px;
-      color: rgba(255, 255, 255, 0.4);
+      color: rgba(255, 255, 255, 0.7);
       margin-left: auto;
-      text-transform: uppercase;
       font-weight: 600;
       letter-spacing: 0.05em;
     }
@@ -303,6 +285,22 @@
 
     .load-more:hover {
       transform: translateY(-3px);
+    }
+
+    .status-message {
+      margin: 24px auto 16px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .status-message.error {
+      color: #FF6B6B;
+    }
+
+    .status-message.success {
+      color: #4ECDC4;
     }
 
     /* Pagination */
@@ -331,6 +329,12 @@
       background: rgba(255, 107, 107, 0.2);
       border-color: #FF6B6B;
       color: #FFFFFF;
+    }
+
+    .page-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      border-color: rgba(255, 255, 255, 0.1);
     }
 
     .page-btn.active {
@@ -456,35 +460,14 @@
       font-size: 15px;
       color: rgba(255, 255, 255, 0.9);
       line-height: 1.6;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
-    #photoModal .modal-reactions {
-      display: flex;
-      gap: 24px;
-      padding-top: 16px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    #photoModal .modal-reaction-btn {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 24px;
-      cursor: pointer;
-      transition: all 0.2s ease;
+    #photoModal .modal-date {
+      font-size: 13px;
       color: rgba(255, 255, 255, 0.6);
-    }
-
-    #photoModal .modal-reaction-btn span {
-      font-size: 16px;
-      font-weight: 700;
-      color: rgba(255, 255, 255, 0.8);
-    }
-
-    #photoModal .modal-reaction-btn:hover {
-      transform: scale(1.15);
-      color: rgba(255, 255, 255, 1);
+      font-weight: 600;
+      letter-spacing: 0.03em;
     }
 
     #photoModal .close-btn {
@@ -581,217 +564,12 @@
     <h1 class="feed-hero">Where Memes Live</h1>
     <p class="subtitle">🔥 The Internet's Funniest Moments, All In One Place 🔥</p>
 
-    <!-- Page 1 -->
-    <div class="page active" data-page="1">
-      <div class="meme-card">
-        <img
-          src="https://meme-dev-v2.s3.eu-west-1.amazonaws.com/uploads/2020/12/12/1607804567339-13117/_versions/684a37d81cce179f54866420d08a81f8-384.jpg"
-          alt="Mountain Landscape">
-        <div class="info">
-          <div class="user">
-            <div class="avatar">J</div>
-            <span>john_doe</span>
-          </div>
-          <p class="description">When the mountain finally loads after buffering for 10 mins 😂</p>
-          <div class="reactions">
-            <div class="reaction-btn">😂 <span>1.2K</span></div>
-            <div class="timestamp">2h ago</div>
-          </div>
-        </div>
-      </div>
+    <div id="feedStatus" class="status-message" role="status" aria-live="polite"></div>
 
-      <div class="meme-card">
-        <img
-          src="https://images.unsplash.com/photo-1674981959759-b6d2f9657f64?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt="Cat">
-        <div class="info">
-          <div class="user">
-            <div class="avatar">S</div>
-            <span>sarah_pets</span>
-          </div>
-          <p class="description">POV: You forgot to feed your cat for 5 minutes 😺</p>
-          <div class="reactions">
-            <div class="reaction-btn">😂 <span>3.4K</span></div>
-            <div class="timestamp">5h ago</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="meme-card">
-        <img
-          src="https://meme-dev.s3.eu-west-1.amazonaws.com/uploads/2020/12/12/1607795389653-13117/86A24EFA-5906-49B2-B6DD-9A3B9370E387.jpeg"
-          alt="Food">
-        <div class="info">
-          <div class="user">
-            <div class="avatar">M</div>
-            <span>mike_foodie</span>
-          </div>
-          <p class="description">Me pretending I can cook after watching 1 TikTok recipe 🍝</p>
-          <div class="reactions">
-            <div class="reaction-btn">😂 <span>5.6K</span></div>
-            <div class="timestamp">1d ago</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="meme-card">
-        <img src="https://pbs.twimg.com/media/GRLbF0iXEAINXPj?format=jpg&name=900x900" alt="Nature">
-        <div class="info">
-          <div class="user">
-            <div class="avatar">A</div>
-            <span>alex_nature</span>
-          </div>
-          <p class="description">Windows XP wallpaper hit different back in the day 🌅</p>
-          <div class="reactions">
-            <div class="reaction-btn">😂 <span>2.8K</span></div>
-            <div class="timestamp">2d ago</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="meme-card">
-        <img
-          src="https://meme-dev-v2.s3.eu-west-1.amazonaws.com/uploads/2020/12/12/1607804567339-13117/_versions/684a37d81cce179f54866420d08a81f8-384.jpg"
-          alt="Mountain Landscape">
-        <div class="info">
-          <div class="user">
-            <div class="avatar">J</div>
-            <span>john_doe</span>
-          </div>
-          <p class="description">When the mountain finally loads after buffering for 10 mins 😂</p>
-          <div class="reactions">
-            <div class="reaction-btn">😂 <span>1.2K</span></div>
-            <div class="timestamp">2h ago</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="meme-card">
-        <img
-          src="https://images.unsplash.com/photo-1674981959759-b6d2f9657f64?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt="Cat">
-        <div class="info">
-          <div class="user">
-            <div class="avatar">S</div>
-            <span>sarah_pets</span>
-          </div>
-          <p class="description">POV: You forgot to feed your cat for 5 minutes 😺</p>
-          <div class="reactions">
-            <div class="reaction-btn">😂 <span>3.4K</span></div>
-            <div class="timestamp">5h ago</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="meme-card">
-        <img
-          src="https://meme-dev.s3.eu-west-1.amazonaws.com/uploads/2020/12/12/1607795389653-13117/86A24EFA-5906-49B2-B6DD-9A3B9370E387.jpeg"
-          alt="Food">
-        <div class="info">
-          <div class="user">
-            <div class="avatar">M</div>
-            <span>mike_foodie</span>
-          </div>
-          <p class="description">Me pretending I can cook after watching 1 TikTok recipe 🍝</p>
-          <div class="reactions">
-            <div class="reaction-btn">😂 <span>5.6K</span></div>
-            <div class="timestamp">1d ago</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="meme-card">
-        <img src="https://pbs.twimg.com/media/GRLbF0iXEAINXPj?format=jpg&name=900x900" alt="Nature">
-        <div class="info">
-          <div class="user">
-            <div class="avatar">A</div>
-            <span>alex_nature</span>
-          </div>
-          <p class="description">Windows XP wallpaper hit different back in the day 🌅</p>
-          <div class="reactions">
-            <div class="reaction-btn">😂 <span>2.8K</span></div>
-            <div class="timestamp">2d ago</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Page 2 -->
-    <div class="page" data-page="2">
-      <div class="meme-card">
-        <img
-          src="https://meme-dev-v2.s3.eu-west-1.amazonaws.com/uploads/2020/12/12/1607804567339-13117/_versions/684a37d81cce179f54866420d08a81f8-384.jpg"
-          alt="Mountain Landscape">
-        <div class="info">
-          <div class="user">
-            <div class="avatar">J</div>
-            <span>john_doe</span>
-          </div>
-          <p class="description">When the mountain finally loads after buffering for 10 mins 😂</p>
-          <div class="reactions">
-            <div class="reaction-btn">😂 <span>1.2K</span></div>
-            <div class="timestamp">2h ago</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="meme-card">
-        <img
-          src="https://images.unsplash.com/photo-1674981959759-b6d2f9657f64?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt="Cat">
-        <div class="info">
-          <div class="user">
-            <div class="avatar">S</div>
-            <span>sarah_pets</span>
-          </div>
-          <p class="description">POV: You forgot to feed your cat for 5 minutes 😺</p>
-          <div class="reactions">
-            <div class="reaction-btn">😂 <span>3.4K</span></div>
-            <div class="timestamp">5h ago</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="meme-card">
-        <img
-          src="https://meme-dev.s3.eu-west-1.amazonaws.com/uploads/2020/12/12/1607795389653-13117/86A24EFA-5906-49B2-B6DD-9A3B9370E387.jpeg"
-          alt="Food">
-        <div class="info">
-          <div class="user">
-            <div class="avatar">M</div>
-            <span>mike_foodie</span>
-          </div>
-          <p class="description">Me pretending I can cook after watching 1 TikTok recipe 🍝</p>
-          <div class="reactions">
-            <div class="reaction-btn">😂 <span>5.6K</span></div>
-            <div class="timestamp">1d ago</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="meme-card">
-        <img src="https://pbs.twimg.com/media/GRLbF0iXEAINXPj?format=jpg&name=900x900" alt="Nature">
-        <div class="info">
-          <div class="user">
-            <div class="avatar">A</div>
-            <span>alex_nature</span>
-          </div>
-          <p class="description">Windows XP wallpaper hit different back in the day 🌅</p>
-          <div class="reactions">
-            <div class="reaction-btn">😂 <span>2.8K</span></div>
-            <div class="timestamp">2d ago</div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div id="feedGrid" class="page active" data-page="dynamic" aria-live="polite"></div>
 
     <!-- Pagination -->
-    <div class="pagination">
-      <button class="page-btn prev-btn"><i class="fas fa-chevron-left"></i></button>
-      <button class="page-btn active" data-page="1">1</button>
-      <button class="page-btn" data-page="2">2</button>
-      <button class="page-btn next-btn"><i class="fas fa-chevron-right"></i></button>
-    </div>
+    <div id="paginationControls" class="pagination" aria-label="Feed pagination"></div>
   </main>
 
   <!-- Photo Modal -->
@@ -813,52 +591,254 @@
       <!-- Description and reactions -->
       <div class="modal-info">
         <p class="modal-description" id="modalDescription"></p>
-        <div class="modal-reactions">
-          <div class="modal-reaction-btn">😂 <span>1.2K</span></div>
-        </div>
+        <p class="modal-date" id="modalPosted"></p>
       </div>
     </div>
   </div>
 
   <script>
-    // Pagination functionality
+    const FEED_ENDPOINT = 'https://hoev7s4i82.execute-api.us-east-1.amazonaws.com/load-feed';
+    const PAGE_SIZE = 8;
+    const PLACEHOLDER_IMAGE = 'https://via.placeholder.com/800x800/140a28/FFFFFF?text=KLIKSY';
+
     let currentPage = 1;
-    const totalPages = 2;
+    let totalPages = 1;
+    let isLoadingFeed = false;
 
-    function showPage(page) {
-      if (page === currentPage) return; // no-op to avoid redundant swaps
-      if (page < 1 || page > totalPages) return;
+    const feedGrid = document.getElementById('feedGrid');
+    const paginationContainer = document.getElementById('paginationControls');
+    const feedStatus = document.getElementById('feedStatus');
 
-      const next = document.querySelector(`.page[data-page="${page}"]`);
-      if (!next) return;
+    const gradientPalette = [
+      'linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%)',
+      'linear-gradient(135deg, #4ECDC4 0%, #45B7AF 100%)',
+      'linear-gradient(135deg, #FFE66D 0%, #FFB347 100%)',
+      'linear-gradient(135deg, #6C63FF 0%, #7EE8FA 100%)',
+      'linear-gradient(135deg, #FF9A9E 0%, #FAD0C4 100%)',
+    ];
 
-      // Swap active page without collapsing layout
-      document.querySelector('.page.active')?.classList.remove('active');
-      next.classList.add('active');
+    const CDN_BASE_URL = (window.KliksyConfig?.cdnBaseUrl || '').replace(/\/$/, '');
 
-      // Update active buttons
-      document.querySelectorAll('.page-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.page === String(page));
-      });
+    const setFeedStatus = (message = '', type = '') => {
+      feedStatus.textContent = message;
+      feedStatus.classList.remove('error', 'success');
+      if (type) {
+        feedStatus.classList.add(type);
+      }
+      feedStatus.style.display = message ? 'block' : 'none';
+    };
 
-      currentPage = page;
+    const pickGradient = (seed = '') => {
+      if (!seed) return gradientPalette[0];
+      const hash = seed.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+      return gradientPalette[hash % gradientPalette.length];
+    };
 
-      // Instant snap to top to eliminate flicker from smooth scroll
-      window.scrollTo({ top: 0, behavior: 'auto' });
-    }
+    const normalizeToUTCString = (value) => {
+      if (!value || typeof value !== 'string') return value;
+      if (value.endsWith('Z') || value.includes('+')) {
+        return value;
+      }
+      return `${value}Z`;
+    };
 
-    // Pagination button click handlers
-    document.querySelectorAll('.page-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        if (btn.classList.contains('prev-btn')) {
-          showPage(currentPage - 1);
-        } else if (btn.classList.contains('next-btn')) {
-          showPage(currentPage + 1);
-        } else {
-          showPage(parseInt(btn.dataset.page));
+    const formatPhilippineDate = (input) => {
+      const normalized = typeof input === 'string' ? normalizeToUTCString(input) : input;
+      const date = normalized ? new Date(normalized) : new Date();
+      if (Number.isNaN(date.getTime())) {
+        return 'Date unavailable';
+      }
+      return new Intl.DateTimeFormat('en-PH', {
+        timeZone: 'Asia/Manila',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      }).format(date);
+    };
+
+    const resolveImageUrl = (meme) => {
+      const key = meme?.s3Key || meme?.s3_key;
+      if (meme?.fileUrl) return meme.fileUrl;
+      if (meme?.imageUrl) return meme.imageUrl;
+      if (meme?.s3Url) return meme.s3Url;
+      if (meme?.bucket && key) return `https://${meme.bucket}.s3.amazonaws.com/${key}`;
+      if (CDN_BASE_URL && key) return `${CDN_BASE_URL}/${key}`;
+      return PLACEHOLDER_IMAGE;
+    };
+
+    const buildUsername = (meme) => {
+      if (meme?.username) return meme.username;
+      if (meme?.user?.username) return meme.user.username;
+      if (meme?.displayName) return meme.displayName;
+      if (meme?.email) return meme.email.split('@')[0];
+      if (meme?.user?.email) return meme.user.email.split('@')[0];
+      return 'Kliksy User';
+    };
+
+    const avatarInitials = (name = '') => name.trim().slice(0, 2).toUpperCase() || 'K';
+
+    const createMemeCard = (meme) => {
+      const card = document.createElement('div');
+      card.className = 'meme-card';
+
+      const image = document.createElement('img');
+      image.src = resolveImageUrl(meme);
+      image.alt = meme?.description || 'Kliksy meme';
+      card.appendChild(image);
+
+      const info = document.createElement('div');
+      info.className = 'info';
+
+      const userRow = document.createElement('div');
+      userRow.className = 'user';
+
+      const username = buildUsername(meme);
+      const avatar = document.createElement('div');
+      avatar.className = 'avatar';
+      avatar.textContent = avatarInitials(username);
+      const avatarBg = pickGradient(username + (meme?.userId || ''));
+      avatar.style.background = avatarBg;
+      avatar.dataset.gradient = avatarBg;
+      userRow.appendChild(avatar);
+
+      const usernameSpan = document.createElement('span');
+      usernameSpan.textContent = username;
+      userRow.appendChild(usernameSpan);
+      info.appendChild(userRow);
+
+      const description = document.createElement('p');
+      description.className = 'description';
+      description.textContent = meme?.description || 'Shared a fresh meme.';
+      info.appendChild(description);
+
+      const metaRow = document.createElement('div');
+      metaRow.className = 'meta-row';
+
+      const timestamp = document.createElement('span');
+      timestamp.className = 'timestamp';
+      const createdAt = meme?.createdAt || meme?.created_at || meme?.createdOn || meme?.updatedAt;
+      const normalizedTimestamp = normalizeToUTCString(createdAt) || new Date().toISOString();
+      timestamp.textContent = formatPhilippineDate(normalizedTimestamp);
+      timestamp.dataset.timestamp = normalizedTimestamp;
+      metaRow.appendChild(timestamp);
+
+      info.appendChild(metaRow);
+      card.appendChild(info);
+
+      return card;
+    };
+
+    const renderMemes = (memes) => {
+      feedGrid.innerHTML = '';
+      if (!memes.length) {
+        setFeedStatus('No memes yet. Be the first to upload one!', '');
+        return;
+      }
+      setFeedStatus('');
+      const fragment = document.createDocumentFragment();
+      memes.forEach((meme) => fragment.appendChild(createMemeCard(meme)));
+      feedGrid.appendChild(fragment);
+      attachCardListeners();
+    };
+
+    const renderPagination = () => {
+      paginationContainer.innerHTML = '';
+      if (totalPages <= 1) {
+        paginationContainer.style.display = 'none';
+        return;
+      }
+      paginationContainer.style.display = 'flex';
+
+      const createButton = (label, targetPage, extraClass = '', disabled = false, isActive = false) => {
+        const button = document.createElement('button');
+        button.className = `page-btn ${extraClass}`.trim();
+        button.innerHTML = label;
+        button.disabled = disabled;
+        if (isActive) {
+          button.classList.add('active');
         }
-      });
-    });
+        button.addEventListener('click', () => {
+          if (disabled || targetPage === currentPage) return;
+          loadPage(targetPage);
+        });
+        return button;
+      };
+
+      paginationContainer.appendChild(
+        createButton('<i class="fas fa-chevron-left"></i>', Math.max(1, currentPage - 1), 'prev-btn', currentPage === 1)
+      );
+
+      for (let page = 1; page <= totalPages; page += 1) {
+        paginationContainer.appendChild(
+          createButton(String(page), page, '', false, page === currentPage)
+        );
+      }
+
+      paginationContainer.appendChild(
+        createButton('<i class="fas fa-chevron-right"></i>', Math.min(totalPages, currentPage + 1), 'next-btn', currentPage === totalPages)
+      );
+    };
+
+    const parseFeedPayload = (payload, fallbackPage) => {
+      const memes = payload?.items || payload?.memes || [];
+      const total = payload?.total || payload?.count || payload?.pagination?.totalItems;
+      const pageSize = payload?.pageSize || payload?.pagination?.pageSize || PAGE_SIZE;
+      const derivedTotalPages = payload?.totalPages
+        || payload?.pagination?.totalPages
+        || (total ? Math.max(1, Math.ceil(total / pageSize)) : Math.max(1, Math.ceil(memes.length / pageSize)));
+      const page = payload?.page || payload?.pagination?.page || fallbackPage;
+
+      return {
+        memes,
+        totalPages: derivedTotalPages,
+        page,
+      };
+    };
+
+    const loadPage = async (page = 1) => {
+      if (isLoadingFeed) return;
+      isLoadingFeed = true;
+      setFeedStatus('Loading feed…');
+      try {
+        const url = new URL(FEED_ENDPOINT, window.location.origin);
+        url.searchParams.set('page', page);
+        url.searchParams.set('pageSize', PAGE_SIZE);
+        const viewer = window.kliksyAuth?.user?.email || window.kliksyAuth?.user?.username;
+        if (viewer) {
+          url.searchParams.set('viewer', viewer);
+        }
+
+        const response = await fetch(url.toString(), {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Unable to load feed right now.');
+        }
+
+        const payload = await response.json().catch(() => ({}));
+        const parsed = parseFeedPayload(payload, page);
+        currentPage = parsed.page;
+        totalPages = parsed.totalPages;
+
+        renderMemes(parsed.memes);
+        renderPagination();
+        if (parsed.memes.length) {
+          window.scrollTo({ top: 0, behavior: 'auto' });
+        }
+      } catch (error) {
+        console.error('Feed error:', error);
+        setFeedStatus(error.message || 'Something went wrong while loading the feed.', 'error');
+      } finally {
+        isLoadingFeed = false;
+      }
+    };
+
+    loadPage(1);
 
     // Photo modal functionality
     const photoModal = document.getElementById('photoModal');
@@ -867,6 +847,7 @@
     const modalHeaderAvatar = document.getElementById('modalHeaderAvatar');
     const modalHeaderTimestamp = document.getElementById('modalHeaderTimestamp');
     const modalDescription = document.getElementById('modalDescription');
+    const modalPosted = document.getElementById('modalPosted');
     const closeModal = photoModal.querySelector('.close-btn');
 
     function attachCardListeners() {
@@ -885,6 +866,10 @@
           modalHeaderAvatar.style.background = avatar.style.background || 'linear-gradient(135deg, #FF6B6B 0%, #4ECDC4 100%)';
           modalHeaderTimestamp.textContent = time.textContent;
           modalDescription.textContent = desc.textContent;
+          const originalTimestamp = time?.dataset.timestamp || time?.textContent;
+          modalPosted.textContent = originalTimestamp
+            ? formatPhilippineDate(originalTimestamp)
+            : '';
           photoModal.classList.remove('hidden');
           document.body.style.overflow = 'hidden';
         });
@@ -910,7 +895,7 @@
       }
     });
 
-    // Initialize card listeners
+    // Initialize modal listeners once
     attachCardListeners();
   </script>
 
