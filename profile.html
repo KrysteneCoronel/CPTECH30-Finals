@@ -6,14 +6,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KLIKSY Profile</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="auth.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0e27 0%, #1a0b2e 50%, #160b28 100%);
+            min-height: 100vh;
+            width: 100vw;
+            overflow-x: hidden;
+            position: relative;
+            color: #FFFFFF;
+        }
+
+        .logo {
+            position: relative;
+            display: flex;
+            gap: 4px;
+            font-size: 36px;
+            font-weight: 900;
+            letter-spacing: 0.05em;
+            z-index: 10;
+            color: #FFFFFF;
+            text-transform: uppercase;
+        }
+
+        .logo-dot {
+            color: #FF6B6B;
+        }
+
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: #0a0e27;
+            padding: 16px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid rgba(255, 107, 107, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
         .nav-links a {
             font-weight: 700;
             color: rgba(255, 255, 255, 0.7);
             padding: 10px 20px;
             border-radius: 12px;
             transition: all 0.3s ease;
-            text-transform: uppercase;
             font-size: 15px;
+            text-transform: uppercase;
             letter-spacing: 0.05em;
             text-decoration: none;
         }
@@ -26,32 +73,6 @@
         .nav-links a:hover {
             color: #FFFFFF;
             background: rgba(255, 107, 107, 0.2);
-        }
-
-        .filter-tabs {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 48px;
-            flex-wrap: wrap;
-        }
-
-        main {
-            position: relative;
-            z-index: 5;
-            padding: 60px 32px 80px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .profile-header {
-            background: linear-gradient(135deg, #1a0b2e 0%, #0f0520 100%);
-            border-radius: 24px;
-            border: 2px solid rgba(255, 107, 107, 0.3);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-            padding: 48px;
-            margin-bottom: 48px;
-            position: relative;
         }
 
         .logout-btn {
@@ -75,7 +96,25 @@
         }
 
         .logout-btn:hover {
-            filter: brightness(1.1);
+            filter: brightness(1.05);
+        }
+
+        main {
+            position: relative;
+            z-index: 5;
+            padding: 60px 32px 80px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, #1a0b2e 0%, #0f0520 100%);
+            border-radius: 24px;
+            border: 2px solid rgba(255, 107, 107, 0.3);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            padding: 48px;
+            margin-bottom: 48px;
+            position: relative;
         }
 
         .profile-avatar {
@@ -112,11 +151,17 @@
 
         .stats-container {
             display: flex;
-            gap: 32px;
+            gap: 24px;
             margin-bottom: 24px;
+            flex-wrap: wrap;
         }
 
         .stat-item {
+            min-width: 120px;
+            padding: 16px 20px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             text-align: center;
         }
 
@@ -130,7 +175,7 @@
         }
 
         .stat-label {
-            font-size: 13px;
+            font-size: 12px;
             color: rgba(255, 255, 255, 0.6);
             font-weight: 700;
             text-transform: uppercase;
@@ -141,91 +186,22 @@
             color: rgba(255, 255, 255, 0.6);
             font-size: 14px;
             font-weight: 600;
-            margin-bottom: 24px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .member-since i {
             color: #4ECDC4;
-            margin-right: 8px;
-        }
-            font-weight: 800;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .profile-username {
-                border-radius: 50%;
-                background: linear-gradient(135deg, #FF6B6B 0%, #4ECDC4 100%);
-            font-size: 32px;
-            font-weight: 800;
-            text-transform: capitalize;
-            letter-spacing: 0.04em;
-            margin-bottom: 8px;
-        }
-
-        .profile-email {
-                font-size: 36px;
-                font-weight: 900;
-                background: linear-gradient(135deg, #FFFFFF 0%, #FFE66D 50%, #FF6B6B 100%);
-                -webkit-background-clip: text;
-                background-clip: text;
-                -webkit-text-fill-color: transparent;
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 16px;
-            margin-bottom: 20px;
-        }
-
-        .stats-container {
-                font-weight: 600;
-            display: flex;
-            gap: 24px;
-            margin: 24px 0;
-        }
-
-        .stat-item {
-                gap: 32px;
-            min-width: 120px;
-            padding: 16px 20px;
-            border-radius: 20px;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 32px;
-            font-weight: 800;
-            color: #FFFFFF;
-        }
-
-        .stat-label {
-                font-weight: 900;
-                background: linear-gradient(135deg, #FF6B6B 0%, #FFE66D 100%);
-                -webkit-background-clip: text;
-                background-clip: text;
-                -webkit-text-fill-color: transparent;
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .member-since {
-                font-weight: 700;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.8);
         }
 
         .status-message {
-                font-size: 14px;
-                margin-bottom: 24px;
             text-align: center;
             margin: 16px auto 32px;
             color: rgba(255, 255, 255, 0.8);
             font-weight: 600;
             letter-spacing: 0.03em;
+            font-size: 14px;
         }
 
         .status-message.error {
@@ -236,46 +212,13 @@
             color: #4ECDC4;
         }
 
-        .pagination-controls {
+        .filter-tabs {
             display: flex;
-            align-items: center;
             justify-content: center;
-            gap: 16px;
-            margin: 32px auto 48px;
+            gap: 12px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
         }
-
-        .pagination-btn {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #FFFFFF;
-            padding: 10px 18px;
-            border-radius: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .pagination-btn:hover:not(:disabled) {
-            border-color: #FF6B6B;
-            color: #FF6B6B;
-        }
-
-        .pagination-btn:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-
-        .pagination-info {
-            font-weight: 700;
-            letter-spacing: 0.05em;
-            color: rgba(255, 255, 255, 0.7);
-        }
-                margin-bottom: 48px;
 
         .filter-tab {
             padding: 10px 24px;
@@ -302,7 +245,6 @@
             color: #FFFFFF;
         }
 
-        /* Photo cards */
         .photo-card {
             background: rgba(20, 10, 40, 0.95);
             color: #FFFFFF;
@@ -376,11 +318,6 @@
             color: white;
         }
 
-        .overlay-btn.view {
-            background: linear-gradient(135deg, #4ECDC4 0%, #45B7D1 100%);
-            display: none;
-        }
-
         .overlay-btn.delete {
             background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
         }
@@ -401,10 +338,48 @@
             color: rgba(255, 255, 255, 0.4);
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
         }
 
-        /* Empty state */
+        .pagination-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin: 32px auto 48px;
+        }
+
+        .pagination-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #FFFFFF;
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .pagination-btn:hover:not(:disabled) {
+            border-color: #FF6B6B;
+            color: #FF6B6B;
+        }
+
+        .pagination-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .pagination-info {
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
         .empty-state {
             text-align: center;
             padding: 80px 20px;
@@ -422,7 +397,6 @@
             font-weight: 600;
         }
 
-        /* Modal */
         .modal {
             position: fixed;
             inset: 0;
@@ -530,7 +504,9 @@
             transition: all 0.3s ease;
         }
 
-
+        .modal-delete-btn:hover {
+            filter: brightness(1.05);
+        }
 
         .close-modal {
             position: absolute;
@@ -551,7 +527,10 @@
             z-index: 10;
         }
 
-        /* Utility classes */
+        .close-modal:hover {
+            filter: brightness(1.05);
+        }
+
         .flex {
             display: flex;
         }
@@ -612,14 +591,18 @@
             }
 
             .stats-container {
-                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .logout-btn {
+                position: static;
+                margin-top: 24px;
             }
         }
     </style>
 </head>
 
 <body>
-    <!-- Navigation -->
     <nav id="mainNav">
         <div class="logo">
             <span class="logo-text">KLIKSY</span><span class="logo-dot">.</span>
@@ -631,38 +614,31 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
     <main>
-        <!-- Profile Header -->
         <div class="profile-header">
-            <button class="logout-btn" onclick="kliksyAuth.logout()">
-                <i class="fas fa-sign-out-alt"></i> Logout
+            <button class="logout-btn" type="button" onclick="kliksyAuth.logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                Logout
             </button>
-            <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
-                <!-- Profile Picture -->
+            <div class="flex items-center gap-6" style="flex-wrap: wrap;">
                 <div class="profile-avatar" id="profileAvatar">U</div>
-
-                <!-- Profile Info -->
-                <div class="flex-1 text-center md:text-left">
-                    <h2 class="profile-username" id="displayUsername">username_here</h2>
+                <div class="flex-1" style="min-width: 250px;">
+                    <h2 class="profile-username" id="displayUsername">Kliksy User</h2>
                     <p class="profile-email" id="displayEmail">user@example.com</p>
-
-                    <!-- Stats -->
-                    <div class="stats-container justify-center md:justify-start">
+                    <div class="stats-container">
                         <div class="stat-item">
-                            <div class="stat-number" id="totalMemes">24</div>
+                            <div class="stat-number" id="totalMemes">0</div>
                             <div class="stat-label">Memes</div>
                         </div>
                         <div class="stat-item">
-                            <div class="stat-number" id="publicMemes">18</div>
+                            <div class="stat-number" id="publicMemes">0</div>
                             <div class="stat-label">Public</div>
                         </div>
                         <div class="stat-item">
-                            <div class="stat-number" id="privateMemes">6</div>
+                            <div class="stat-number" id="privateMemes">0</div>
                             <div class="stat-label">Private</div>
                         </div>
                     </div>
-
                     <p class="member-since">
                         <i class="fas fa-calendar-alt"></i>
                         Member since January 2026
@@ -671,24 +647,25 @@
             </div>
         </div>
 
-        <!-- Filter Tabs -->
         <div class="filter-tabs">
             <div class="filter-tab active" data-filter="all">
-                <i class="fas fa-th"></i> All Memes
+                <i class="fas fa-th"></i>
+                All Memes
             </div>
             <div class="filter-tab" data-filter="public">
-                <i class="fas fa-globe"></i> Public
+                <i class="fas fa-globe"></i>
+                Public
             </div>
             <div class="filter-tab" data-filter="private">
-                <i class="fas fa-lock"></i> Private
+                <i class="fas fa-lock"></i>
+                Private
             </div>
         </div>
+
         <p id="profileStatus" class="status-message" role="status" aria-live="polite"></p>
 
-        <!-- My Photos Grid -->
         <div class="grid grid-cols-1 sm-grid-cols-2 lg-grid-cols-3 xl-grid-cols-4 gap-6" id="photosGrid"></div>
 
-        <!-- Pagination -->
         <div id="paginationControls" class="pagination-controls hidden" aria-live="polite">
             <button type="button" id="prevPage" class="pagination-btn">
                 <i class="fas fa-arrow-left"></i>
@@ -701,30 +678,27 @@
             </button>
         </div>
 
-        <!-- Empty State -->
         <div id="emptyState" class="empty-state hidden">
             <i class="fas fa-images"></i>
             <p>No memes found 😢</p>
         </div>
     </main>
 
-    <!-- Photo Modal -->
     <div id="photoModal" class="modal hidden">
         <div class="modal-content">
-            <button class="close-modal" onclick="closePhotoModal()">&times;</button>
+            <button class="close-modal" type="button" onclick="closePhotoModal()">&times;</button>
             <div class="modal-image-section">
-                <img id="modalImage" src="" alt="">
+                <img id="modalImage" src="" alt="Clicked meme">
             </div>
             <div class="modal-info-section">
                 <h3 class="modal-header-title">Your Meme</h3>
                 <div id="modalPrivacy" class="modal-privacy"></div>
                 <p id="modalTimestamp" class="modal-timestamp"></p>
-                <h4
-                    style="color: rgba(255, 255, 255, 0.8); font-weight: 700; font-size: 14px; margin-bottom: 12px; text-transform: uppercase;">
-                    Description</h4>
+                <h4 style="color: rgba(255, 255, 255, 0.8); font-weight: 700; font-size: 14px; margin-bottom: 12px; text-transform: uppercase;">Description</h4>
                 <p id="modalDescription" class="modal-description"></p>
-                <button class="modal-delete-btn" onclick="deleteCurrentPhoto()">
-                    <i class="fas fa-trash"></i> Delete Meme
+                <button class="modal-delete-btn" type="button" onclick="deleteCurrentPhoto()">
+                    <i class="fas fa-trash"></i>
+                    Delete Meme
                 </button>
             </div>
         </div>
@@ -751,16 +725,13 @@
             totalItems: 0,
         };
 
-        // Populate profile header from stored auth payload
         function populateProfileHeader() {
             const auth = window.kliksyAuth;
             if (!auth || !auth.user) {
                 return;
             }
-
             const { username = 'Kliksy User', email = 'user@example.com' } = auth.user;
             const avatarSource = (username || email || 'U').trim();
-
             document.getElementById('displayUsername').textContent = username;
             document.getElementById('displayEmail').textContent = email;
             document.getElementById('profileAvatar').textContent = avatarSource.charAt(0).toUpperCase();
@@ -799,20 +770,30 @@
             }).format(date);
         };
 
+        const resolveMemeImage = (meme = {}) => {
+            if (meme.fileUrl) return meme.fileUrl;
+            if (meme.imageUrl) return meme.imageUrl;
+            if (meme.s3Url) return meme.s3Url;
+            if (meme.bucket && (meme.s3Key || meme.s3_key)) {
+                return `https://${meme.bucket}.s3.amazonaws.com/${meme.s3Key || meme.s3_key}`;
+            }
+            return PROFILE_PLACEHOLDER_IMAGE;
+        };
+
         function buildMemeCard(meme) {
             const card = document.createElement('div');
             card.className = 'photo-card';
-            card.dataset.privacy = meme.privacy;
-            card.dataset.memeId = meme.id;
+            card.dataset.privacy = meme.privacy || 'public';
+            card.dataset.memeId = meme.id || meme.memeId || meme.meme_id || '';
 
             const badge = document.createElement('div');
-            const isPublic = meme.privacy === 'public';
+            const isPublic = (meme.privacy || 'public') === 'public';
             badge.className = `privacy-badge ${isPublic ? 'public' : 'private'}`;
             badge.innerHTML = `<i class="fas ${isPublic ? 'fa-globe' : 'fa-lock'}"></i> ${isPublic ? 'Public' : 'Private'}`;
             card.appendChild(badge);
 
             const img = document.createElement('img');
-            img.src = meme.fileUrl || PROFILE_PLACEHOLDER_IMAGE;
+            img.src = resolveMemeImage(meme);
             img.alt = meme.description || 'Kliksy meme';
             card.appendChild(img);
 
@@ -835,9 +816,9 @@
             description.textContent = meme.description || 'Shared a fresh meme.';
             const timestamp = document.createElement('p');
             timestamp.className = 'photo-timestamp';
-            const formattedDate = formatPhilippineDate(meme.createdAt);
+            const formattedDate = formatPhilippineDate(meme.createdAt || meme.created_at);
             timestamp.textContent = formattedDate;
-            timestamp.dataset.timestamp = meme.createdAt || '';
+            timestamp.dataset.timestamp = meme.createdAt || meme.created_at || '';
             info.appendChild(description);
             info.appendChild(timestamp);
             card.appendChild(info);
@@ -911,7 +892,9 @@
             cards.forEach((card) => {
                 const matches = filter === 'all' || card.getAttribute('data-privacy') === filter;
                 card.style.display = matches ? 'block' : 'none';
-                if (matches) visibleCount += 1;
+                if (matches) {
+                    visibleCount += 1;
+                }
             });
 
             if (visibleCount === 0) {
@@ -958,6 +941,9 @@
             } catch (error) {
                 console.error('Profile load error:', error);
                 setProfileStatus(error.message || 'Something went wrong while loading your profile.', 'error');
+                photosGrid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                photosGrid.style.display = 'none';
                 updatePaginationControls({ totalPages: 1, page: 1 });
             }
         }
@@ -967,7 +953,8 @@
             const modal = document.getElementById('photoModal');
             const img = card.querySelector('img');
             const description = card.querySelector('.photo-description').textContent;
-            const timestamp = card.querySelector('.photo-timestamp').dataset.timestamp || card.querySelector('.photo-timestamp').textContent;
+            const timestampEl = card.querySelector('.photo-timestamp');
+            const timestamp = timestampEl.dataset.timestamp || timestampEl.textContent;
             const privacy = card.getAttribute('data-privacy');
 
             document.getElementById('modalImage').src = img.src;
@@ -1045,14 +1032,14 @@
             });
         }
 
-        document.getElementById('photoModal').addEventListener('click', function (e) {
-            if (e.target === this) {
+        document.getElementById('photoModal').addEventListener('click', function (event) {
+            if (event.target === this) {
                 closePhotoModal();
             }
         });
 
-        document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') {
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
                 closePhotoModal();
             }
         });
