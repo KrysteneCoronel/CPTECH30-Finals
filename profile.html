@@ -781,7 +781,8 @@
             const card = document.createElement('div');
             card.className = 'photo-card';
             card.dataset.privacy = meme.privacy || 'public';
-            card.dataset.memeId = meme.id || meme.memeId || meme.meme_id || '';
+            const resolvedMemeId = meme.id || meme.memeId || meme.meme_id || '';
+            card.dataset.memeId = resolvedMemeId ? String(resolvedMemeId) : '';
 
             const badge = document.createElement('div');
             const isPublic = (meme.privacy || 'public') === 'public';
@@ -1010,8 +1011,8 @@
                 return;
             }
 
-            const memeIdValue = Number(card.getAttribute('data-meme-id') || card.dataset.memeId);
-            if (!Number.isFinite(memeIdValue) || memeIdValue <= 0) {
+            const memeIdValue = (card.getAttribute('data-meme-id') || card.dataset.memeId || '').trim();
+            if (!memeIdValue) {
                 setProfileStatus('Unable to determine which meme to delete.', 'error');
                 return;
             }

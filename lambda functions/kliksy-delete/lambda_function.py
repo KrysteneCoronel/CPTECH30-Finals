@@ -48,12 +48,11 @@ def _safe_json_body(event):
 	return data if isinstance(data, dict) else {}
 
 
-def _parse_int(value):
-	try:
-		parsed = int(value)
-		return parsed if parsed > 0 else None
-	except (TypeError, ValueError):
+def _normalize_meme_id(value):
+	if value is None:
 		return None
+	meme_id = str(value).strip()
+	return meme_id or None
 
 
 def _extract_request_context(event):
@@ -79,7 +78,7 @@ def _extract_request_context(event):
 		or path_params.get('memeId')
 		or path_params.get('meme_id')
 	)
-	meme_id = _parse_int(meme_id_raw)
+	meme_id = _normalize_meme_id(meme_id_raw)
 
 	return identifier, meme_id
 
@@ -92,7 +91,7 @@ def _fetch_user(cursor, identifier: str):
 	return cursor.fetchone()
 
 
-def _fetch_meme(cursor, meme_id: int, user_id: int):
+def _fetch_meme(cursor, meme_id: str, user_id: int):
 	cursor.execute(
 		"SELECT id, s3_key FROM memes WHERE id=%s AND user_id=%s LIMIT 1",
 		(meme_id, user_id),
