@@ -345,10 +345,11 @@
 
         .pagination-controls {
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             gap: 12px;
-            margin: 48px auto 60px;
+            margin-top: 60px;
+            flex-wrap: wrap;
         }
 
         .pagination-btn {
@@ -359,13 +360,13 @@
             color: rgba(255, 255, 255, 0.7);
             font-weight: 700;
             font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            transition: all 0.3s ease;
         }
 
         .pagination-btn:hover:not(:disabled) {
@@ -378,6 +379,17 @@
             opacity: 0.35;
             cursor: not-allowed;
             border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .pagination-btn.active {
+            background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+            border-color: #FF6B6B;
+            color: #FFFFFF;
+        }
+
+        .pagination-btn.prev-btn,
+        .pagination-btn.next-btn {
+            padding: 10px 12px;
         }
 
         .pagination-info {
@@ -674,12 +686,12 @@
         <div class="grid grid-cols-1 sm-grid-cols-2 lg-grid-cols-3 xl-grid-cols-4 gap-6" id="photosGrid"></div>
 
         <div id="paginationControls" class="pagination-controls hidden" aria-live="polite">
-            <button type="button" id="prevPage" class="pagination-btn">
+            <button type="button" id="prevPage" class="pagination-btn prev-btn">
                 <i class="fas fa-arrow-left"></i>
                 Prev
             </button>
             <span id="pageInfo" class="pagination-info">Page 1 of 1</span>
-            <button type="button" id="nextPage" class="pagination-btn">
+            <button type="button" id="nextPage" class="pagination-btn next-btn">
                 Next
                 <i class="fas fa-arrow-right"></i>
             </button>
