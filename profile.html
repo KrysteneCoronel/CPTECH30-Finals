@@ -6,55 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KLIKSY Profile</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="auth.js"></script>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-        }
-
-        body {
-            background: linear-gradient(135deg, #0a0e27 0%, #1a0b2e 50%, #160b28 100%);
-            min-height: 100vh;
-            width: 100vw;
-            overflow-x: hidden;
-            position: relative;
-            color: #FFFFFF;
-        }
-
-        /* Logo */
-        .logo {
-            position: relative;
-            display: flex;
-            gap: 4px;
-            font-size: 36px;
-            font-weight: 900;
-            letter-spacing: 0.05em;
-            z-index: 10;
-            color: #FFFFFF;
-            text-transform: uppercase;
-        }
-
-        .logo-dot {
-            color: #FF6B6B;
-        }
-
-        /* Navigation */
-        nav {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: #0a0e27;
-            padding: 16px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid rgba(255, 107, 107, 0.2);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        }
-
         .nav-links a {
             font-weight: 700;
             color: rgba(255, 255, 255, 0.7);
@@ -64,78 +15,146 @@
             text-transform: uppercase;
             font-size: 15px;
             letter-spacing: 0.05em;
+            text-decoration: none;
         }
 
-        .nav-links a:hover,
         .nav-links a.active {
             color: #FFFFFF;
-            background: rgba(255, 255, 255, 0.12);
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.3) 0%, rgba(78, 205, 196, 0.3) 100%);
+        }
+
+        .nav-links a:hover {
+            color: #FFFFFF;
+            background: rgba(255, 107, 107, 0.2);
         }
 
         .filter-tabs {
             display: flex;
             justify-content: center;
             gap: 12px;
-            margin: 48px auto;
+            margin-bottom: 48px;
             flex-wrap: wrap;
-            max-width: 900px;
         }
 
         main {
-            max-width: 1200px;
+            position: relative;
+            z-index: 5;
+            padding: 60px 32px 80px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 40px 20px 120px;
         }
 
         .profile-header {
+            background: linear-gradient(135deg, #1a0b2e 0%, #0f0520 100%);
+            border-radius: 24px;
+            border: 2px solid rgba(255, 107, 107, 0.3);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            padding: 48px;
+            margin-bottom: 48px;
             position: relative;
-            background: radial-gradient(circle at top left, rgba(255, 107, 107, 0.2), rgba(10, 14, 39, 0.9));
-            border: 2px solid rgba(255, 255, 255, 0.08);
-            border-radius: 32px;
-            padding: 40px;
-            margin-top: 48px;
-            margin-bottom: 40px;
-            box-shadow: 0 20px 60px rgba(5, 0, 15, 0.4);
         }
 
         .logout-btn {
-            position: absolute;
-            top: 28px;
-            right: 28px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            color: #FFFFFF;
-            padding: 10px 18px;
+            background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+            padding: 10px 24px;
             border-radius: 12px;
             font-weight: 700;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            cursor: pointer;
-            display: inline-flex;
-            gap: 8px;
+            display: flex;
             align-items: center;
+            gap: 8px;
             transition: all 0.3s ease;
+            border: none;
+            color: white;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 13px;
+            letter-spacing: 0.05em;
+            position: absolute;
+            top: 48px;
+            right: 48px;
         }
 
         .logout-btn:hover {
-            background: rgba(255, 107, 107, 0.25);
-            border-color: #FF6B6B;
+            filter: brightness(1.1);
         }
 
         .profile-avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 32px;
-            background: rgba(255, 255, 255, 0.08);
+            width: 128px;
+            height: 128px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FF6B6B 0%, #4ECDC4 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 48px;
+            font-size: 56px;
+            font-weight: 900;
+            color: white;
+            box-shadow: 0 8px 32px rgba(255, 107, 107, 0.5);
+        }
+
+        .profile-username {
+            font-size: 36px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #FFFFFF 0%, #FFE66D 50%, #FF6B6B 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+            text-transform: capitalize;
+        }
+
+        .profile-email {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .stats-container {
+            display: flex;
+            gap: 32px;
+            margin-bottom: 24px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #FF6B6B 0%, #FFE66D 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .member-since {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .member-since i {
+            color: #4ECDC4;
+            margin-right: 8px;
+        }
             font-weight: 800;
             border: 2px solid rgba(255, 255, 255, 0.2);
         }
 
         .profile-username {
+                border-radius: 50%;
+                background: linear-gradient(135deg, #FF6B6B 0%, #4ECDC4 100%);
             font-size: 32px;
             font-weight: 800;
             text-transform: capitalize;
@@ -144,18 +163,26 @@
         }
 
         .profile-email {
+                font-size: 36px;
+                font-weight: 900;
+                background: linear-gradient(135deg, #FFFFFF 0%, #FFE66D 50%, #FF6B6B 100%);
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
             color: rgba(255, 255, 255, 0.7);
             font-size: 16px;
             margin-bottom: 20px;
         }
 
         .stats-container {
+                font-weight: 600;
             display: flex;
             gap: 24px;
             margin: 24px 0;
         }
 
         .stat-item {
+                gap: 32px;
             min-width: 120px;
             padding: 16px 20px;
             border-radius: 20px;
@@ -171,6 +198,11 @@
         }
 
         .stat-label {
+                font-weight: 900;
+                background: linear-gradient(135deg, #FF6B6B 0%, #FFE66D 100%);
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
             font-size: 12px;
             text-transform: uppercase;
             letter-spacing: 0.1em;
@@ -178,6 +210,7 @@
         }
 
         .member-since {
+                font-weight: 700;
             display: inline-flex;
             align-items: center;
             gap: 8px;
@@ -186,6 +219,8 @@
         }
 
         .status-message {
+                font-size: 14px;
+                margin-bottom: 24px;
             text-align: center;
             margin: 16px auto 32px;
             color: rgba(255, 255, 255, 0.8);
@@ -200,6 +235,47 @@
         .status-message.success {
             color: #4ECDC4;
         }
+
+        .pagination-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin: 32px auto 48px;
+        }
+
+        .pagination-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #FFFFFF;
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .pagination-btn:hover:not(:disabled) {
+            border-color: #FF6B6B;
+            color: #FF6B6B;
+        }
+
+        .pagination-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .pagination-info {
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: rgba(255, 255, 255, 0.7);
+        }
+                margin-bottom: 48px;
 
         .filter-tab {
             padding: 10px 24px;
@@ -612,6 +688,19 @@
         <!-- My Photos Grid -->
         <div class="grid grid-cols-1 sm-grid-cols-2 lg-grid-cols-3 xl-grid-cols-4 gap-6" id="photosGrid"></div>
 
+        <!-- Pagination -->
+        <div id="paginationControls" class="pagination-controls hidden" aria-live="polite">
+            <button type="button" id="prevPage" class="pagination-btn">
+                <i class="fas fa-arrow-left"></i>
+                Prev
+            </button>
+            <span id="pageInfo" class="pagination-info">Page 1 of 1</span>
+            <button type="button" id="nextPage" class="pagination-btn">
+                Next
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+
         <!-- Empty State -->
         <div id="emptyState" class="empty-state hidden">
             <i class="fas fa-images"></i>
@@ -649,8 +738,18 @@
         const photosGrid = document.getElementById('photosGrid');
         const emptyState = document.getElementById('emptyState');
         const profileStatus = document.getElementById('profileStatus');
+        const paginationControls = document.getElementById('paginationControls');
+        const prevPageBtn = document.getElementById('prevPage');
+        const nextPageBtn = document.getElementById('nextPage');
+        const pageInfo = document.getElementById('pageInfo');
 
         let currentCard = null;
+        const profilePagination = {
+            page: 1,
+            totalPages: 1,
+            pageSize: 8,
+            totalItems: 0,
+        };
 
         // Populate profile header from stored auth payload
         function populateProfileHeader() {
@@ -761,6 +860,7 @@
             if (!items.length) {
                 emptyState.classList.remove('hidden');
                 photosGrid.style.display = 'none';
+                updatePaginationControls({ totalPages: 1, page: 1 });
                 return;
             }
 
@@ -772,6 +872,31 @@
             photosGrid.appendChild(fragment);
 
             applyFilter(getActiveFilter());
+            updatePaginationControls(payload?.pagination || {});
+        }
+
+        function updatePaginationControls(pagination = {}) {
+            if (!paginationControls || !prevPageBtn || !nextPageBtn || !pageInfo) {
+                return;
+            }
+
+            const totalPages = Math.max(1, pagination.totalPages ?? profilePagination.totalPages ?? 1);
+            const currentPage = Math.min(totalPages, Math.max(1, pagination.page ?? profilePagination.page ?? 1));
+
+            profilePagination.totalPages = totalPages;
+            profilePagination.page = currentPage;
+            profilePagination.totalItems = pagination.totalItems ?? profilePagination.totalItems;
+            profilePagination.pageSize = pagination.pageSize ?? profilePagination.pageSize;
+
+            if (totalPages <= 1) {
+                paginationControls.classList.add('hidden');
+                return;
+            }
+
+            paginationControls.classList.remove('hidden');
+            pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+            prevPageBtn.disabled = currentPage <= 1;
+            nextPageBtn.disabled = currentPage >= totalPages;
         }
 
         function getActiveFilter() {
@@ -798,7 +923,7 @@
             }
         }
 
-        async function loadProfileMemes() {
+        async function loadProfileMemes(page = 1) {
             const user = window.kliksyAuth?.user;
             if (!user) {
                 setProfileStatus('Please sign in again to view your profile.', 'error');
@@ -809,6 +934,8 @@
             try {
                 const url = new URL(PROFILE_MEMES_ENDPOINT);
                 url.searchParams.set('email', user.email);
+                url.searchParams.set('page', page);
+                url.searchParams.set('pageSize', profilePagination.pageSize);
 
                 const response = await fetch(url.toString(), {
                     headers: {
@@ -821,11 +948,17 @@
                 }
 
                 const payload = await response.json();
+                const pagination = payload?.pagination || {};
+                profilePagination.page = pagination.page ?? page;
+                profilePagination.totalPages = pagination.totalPages ?? 1;
+                profilePagination.totalItems = pagination.totalItems ?? (payload?.stats?.total ?? payload?.items?.length ?? 0);
+                profilePagination.pageSize = pagination.pageSize ?? profilePagination.pageSize;
                 renderProfileMemes(payload);
                 setProfileStatus('');
             } catch (error) {
                 console.error('Profile load error:', error);
                 setProfileStatus(error.message || 'Something went wrong while loading your profile.', 'error');
+                updatePaginationControls({ totalPages: 1, page: 1 });
             }
         }
 
@@ -897,6 +1030,20 @@
                 applyFilter(this.getAttribute('data-filter'));
             });
         });
+
+        if (prevPageBtn && nextPageBtn) {
+            prevPageBtn.addEventListener('click', () => {
+                if (profilePagination.page > 1) {
+                    loadProfileMemes(profilePagination.page - 1);
+                }
+            });
+
+            nextPageBtn.addEventListener('click', () => {
+                if (profilePagination.page < profilePagination.totalPages) {
+                    loadProfileMemes(profilePagination.page + 1);
+                }
+            });
+        }
 
         document.getElementById('photoModal').addEventListener('click', function (e) {
             if (e.target === this) {
