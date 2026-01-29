@@ -18,6 +18,24 @@ def _get_connection():
 	return mysql.connector.connect(**DB_CONFIG)
 
 
+def _log_activity(action: str, details: str) -> None:
+	try:
+		conn = _get_connection()
+		cursor = conn.cursor()
+		cursor.execute(
+			"INSERT INTO activity_logs (action, details) VALUES (%s, %s)",
+			(action, details),
+		)
+		conn.commit()
+	except Exception as exc:  # noqa: BLE001
+		print(f"activity log failed: {exc}")
+	finally:
+		if 'cursor' in locals():
+			cursor.close()
+		if 'conn' in locals() and conn.is_connected():
+			conn.close()
+
+
 def _build_response(status_code: int, payload: dict):
 	return {
 		'statusCode': status_code,
@@ -124,6 +142,8 @@ def lambda_handler(event, _context):
 			(meme_id, user['id']),
 		)
 		conn.commit()
+
+		_log_activity('DELETE', f"user deleted meme: {user['email']} - {meme.get('s3_key', 'unknown')}")
 
 		payload = {
 			'message': 'Meme deleted successfully',

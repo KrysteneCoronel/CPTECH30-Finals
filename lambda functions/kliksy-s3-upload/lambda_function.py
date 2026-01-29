@@ -23,6 +23,24 @@ def _get_connection():
 	return mysql.connector.connect(**DB_CONFIG)
 
 
+def _log_activity(action: str, details: str) -> None:
+	try:
+		conn = _get_connection()
+		cursor = conn.cursor()
+		cursor.execute(
+			"INSERT INTO activity_logs (action, details) VALUES (%s, %s)",
+			(action, details),
+		)
+		conn.commit()
+	except Exception as exc:  # noqa: BLE001
+		print(f"activity log failed: {exc}")
+	finally:
+		if 'cursor' in locals():
+			cursor.close()
+		if 'conn' in locals() and conn.is_connected():
+			conn.close()
+
+
 def _parse_body(event):
 	if 'body' in event:
 		body = event['body']
@@ -122,6 +140,8 @@ def lambda_handler(event, context):
 			),
 		)
 		conn.commit()
+
+		_log_activity('UPLOAD', f"user uploaded file: {user['email']} - {s3_key}")
 
 		file_url = f"https://{UPLOAD_BUCKET}.s3.amazonaws.com/{s3_key}"
 
