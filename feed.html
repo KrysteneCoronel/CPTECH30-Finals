@@ -199,9 +199,10 @@
     .meme-card img {
       width: 100%;
       height: 300px;
-      object-fit: cover;
+      object-fit: contain;
       position: relative;
       z-index: 1;
+      background: rgba(0, 0, 0, 0.3);
     }
 
     .meme-card .info {
@@ -396,26 +397,36 @@
 
     #photoModal .modal-content {
       display: flex;
-      flex-direction: column;
-      max-width: 700px;
+      max-width: 900px;
       width: 100%;
       background: rgba(26, 11, 46, 0.95);
       border-radius: 24px;
       overflow: hidden;
-      max-height: 90vh;
-      overflow-y: auto;
       border: 2px solid rgba(255, 107, 107, 0.3);
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      max-height: 90vh;
+      position: relative;
+    }
+
+    #photoModal .modal-image-section {
+      flex: 2;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      min-width: 500px;
+      min-height: 600px;
       position: relative;
     }
 
     #photoModal .modal-header {
-      padding: 20px 24px;
+      padding: 0 0 20px 0;
       border-bottom: 2px solid rgba(255, 255, 255, 0.1);
       display: flex;
       align-items: center;
       gap: 12px;
-      background: rgba(255, 255, 255, 0.02);
+      margin-bottom: 20px;
     }
 
     #photoModal .modal-header-avatar {
@@ -444,15 +455,20 @@
       margin: 0;
     }
 
-    #photoModal img {
-      width: 100%;
-      max-height: 500px;
+    #photoModal .modal-image-section img {
+      max-width: 100%;
+      max-height: 550px;
+      width: auto;
+      height: auto;
       object-fit: contain;
-      background: rgba(0, 0, 0, 0.3);
+      border-radius: 12px;
     }
 
-    #photoModal .modal-info {
-      padding: 24px;
+    #photoModal .modal-info-section {
+      flex: 1;
+      padding: 32px;
+      overflow-y: auto;
+      max-height: 90vh;
       color: #FFFFFF;
     }
 
@@ -461,6 +477,10 @@
       color: rgba(255, 255, 255, 0.9);
       line-height: 1.6;
       margin-bottom: 16px;
+    }
+
+    #photoModal .modal-info-section .modal-description {
+      margin-top: 0;
     }
 
     #photoModal .modal-date {
@@ -475,23 +495,66 @@
       top: 20px;
       right: 20px;
       font-size: 32px;
-      background: rgba(255, 107, 107, 0.9);
-      border: 2px solid rgba(255, 255, 255, 0.3);
+      background: none;
+      border: none;
       cursor: pointer;
       color: #fff;
       width: 48px;
       height: 48px;
-      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       transition: all 0.3s ease;
       z-index: 10;
-      font-weight: 700;
+      font-weight: 400;
+      line-height: 0;
+      padding: 0;
     }
 
     #photoModal .close-btn:hover {
-      background: rgba(255, 107, 107, 1);
+      color: #FF6B6B;
+      transform: scale(1.1);
+    }
+
+    .modal-nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 48px;
+      height: 48px;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 32px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      z-index: 10;
+      opacity: 0;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-image-section:hover .modal-nav-btn:not(:disabled) {
+      opacity: 1;
+    }
+
+    .modal-nav-btn:hover:not(:disabled) {
+      transform: translateY(-50%) scale(1.2);
+    }
+
+    .modal-nav-btn:disabled {
+      opacity: 0 !important;
+      cursor: not-allowed;
+    }
+
+    .modal-nav-btn.prev {
+      left: 20px;
+    }
+
+    .modal-nav-btn.next {
+      right: 20px;
     }
 
     /* Utility classes */
@@ -544,6 +607,17 @@
         grid-template-columns: repeat(4, minmax(0, 1fr));
       }
     }
+
+    @media (max-width: 640px) {
+      #photoModal .modal-content {
+        flex-direction: column;
+      }
+
+      #photoModal .modal-image-section {
+        min-width: auto;
+        min-height: 400px;
+      }
+    }
   </style>
 </head>
 
@@ -576,20 +650,26 @@
   <div id="photoModal" class="hidden">
     <button class="close-btn">&times;</button>
     <div class="modal-content">
-      <!-- Header with user info -->
-      <div class="modal-header">
-        <div class="modal-header-avatar" id="modalHeaderAvatar"></div>
-        <div class="modal-header-info">
-          <h3 id="modalHeaderUsername"></h3>
-          <p id="modalHeaderTimestamp"></p>
-        </div>
+      <!-- Image Section -->
+      <div class="modal-image-section">
+        <button class="modal-nav-btn prev" type="button" id="modalPrevBtn">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="modal-nav-btn next" type="button" id="modalNextBtn">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+        <img id="modalImage" src="" alt="">
       </div>
-
-      <!-- Image -->
-      <img id="modalImage" src="" alt="">
-
-      <!-- Description and reactions -->
-      <div class="modal-info">
+      
+      <!-- Info Section -->
+      <div class="modal-info-section">
+        <div class="modal-header">
+          <div class="modal-header-avatar" id="modalHeaderAvatar"></div>
+          <div class="modal-header-info">
+            <h3 id="modalHeaderUsername"></h3>
+            <p id="modalHeaderTimestamp"></p>
+          </div>
+        </div>
         <p class="modal-description" id="modalDescription"></p>
         <p class="modal-date" id="modalPosted"></p>
       </div>
@@ -604,6 +684,8 @@
     let currentPage = 1;
     let totalPages = 1;
     let isLoadingFeed = false;
+    let currentModalIndex = -1;
+    let allMemeCards = [];
 
     const feedGrid = document.getElementById('feedGrid');
     const paginationContainer = document.getElementById('paginationControls');
@@ -734,12 +816,14 @@
       feedGrid.innerHTML = '';
       if (!memes.length) {
         setFeedStatus('No memes yet. Be the first to upload one!', '');
+        allMemeCards = [];
         return;
       }
       setFeedStatus('');
       const fragment = document.createDocumentFragment();
       memes.forEach((meme) => fragment.appendChild(createMemeCard(meme)));
       feedGrid.appendChild(fragment);
+      allMemeCards = Array.from(feedGrid.querySelectorAll('.meme-card'));
       attachCardListeners();
     };
 
@@ -849,27 +933,51 @@
     const modalDescription = document.getElementById('modalDescription');
     const modalPosted = document.getElementById('modalPosted');
     const closeModal = photoModal.querySelector('.close-btn');
+    const modalPrevBtn = document.getElementById('modalPrevBtn');
+    const modalNextBtn = document.getElementById('modalNextBtn');
+
+    function updateModalContent(card) {
+      const img = card.querySelector('img');
+      const user = card.querySelector('.user span');
+      const avatar = card.querySelector('.avatar');
+      const desc = card.querySelector('.description');
+      const time = card.querySelector('.timestamp');
+
+      modalImage.src = img.src;
+      modalImage.alt = img.alt;
+      modalHeaderUsername.textContent = user.textContent;
+      modalHeaderAvatar.textContent = avatar.textContent;
+      modalHeaderAvatar.style.background = avatar.style.background || 'linear-gradient(135deg, #FF6B6B 0%, #4ECDC4 100%)';
+      modalHeaderTimestamp.textContent = time.textContent;
+      modalDescription.textContent = desc.textContent;
+      const originalTimestamp = time?.dataset.timestamp || time?.textContent;
+      modalPosted.textContent = originalTimestamp
+        ? formatPhilippineDate(originalTimestamp)
+        : '';
+    }
+
+    function updateNavigationButtons() {
+      if (modalPrevBtn && modalNextBtn) {
+        modalPrevBtn.disabled = currentModalIndex <= 0;
+        modalNextBtn.disabled = currentModalIndex >= allMemeCards.length - 1;
+      }
+    }
+
+    function navigateModal(direction) {
+      const newIndex = currentModalIndex + direction;
+      if (newIndex >= 0 && newIndex < allMemeCards.length) {
+        currentModalIndex = newIndex;
+        updateModalContent(allMemeCards[currentModalIndex]);
+        updateNavigationButtons();
+      }
+    }
 
     function attachCardListeners() {
-      document.querySelectorAll('.meme-card').forEach(card => {
+      document.querySelectorAll('.meme-card').forEach((card, index) => {
         card.addEventListener('click', () => {
-          const img = card.querySelector('img');
-          const user = card.querySelector('.user span');
-          const avatar = card.querySelector('.avatar');
-          const desc = card.querySelector('.description');
-          const time = card.querySelector('.timestamp');
-
-          modalImage.src = img.src;
-          modalImage.alt = img.alt;
-          modalHeaderUsername.textContent = user.textContent;
-          modalHeaderAvatar.textContent = avatar.textContent;
-          modalHeaderAvatar.style.background = avatar.style.background || 'linear-gradient(135deg, #FF6B6B 0%, #4ECDC4 100%)';
-          modalHeaderTimestamp.textContent = time.textContent;
-          modalDescription.textContent = desc.textContent;
-          const originalTimestamp = time?.dataset.timestamp || time?.textContent;
-          modalPosted.textContent = originalTimestamp
-            ? formatPhilippineDate(originalTimestamp)
-            : '';
+          currentModalIndex = index;
+          updateModalContent(card);
+          updateNavigationButtons();
           photoModal.classList.remove('hidden');
           document.body.style.overflow = 'hidden';
         });
@@ -879,12 +987,22 @@
     closeModal.addEventListener('click', () => {
       photoModal.classList.add('hidden');
       document.body.style.overflow = 'auto';
+      currentModalIndex = -1;
     });
+
+    if (modalPrevBtn) {
+      modalPrevBtn.addEventListener('click', () => navigateModal(-1));
+    }
+
+    if (modalNextBtn) {
+      modalNextBtn.addEventListener('click', () => navigateModal(1));
+    }
 
     photoModal.addEventListener('click', e => {
       if (e.target === photoModal) {
         photoModal.classList.add('hidden');
         document.body.style.overflow = 'auto';
+        currentModalIndex = -1;
       }
     });
 
@@ -892,6 +1010,7 @@
       if (e.key === 'Escape') {
         photoModal.classList.add('hidden');
         document.body.style.overflow = 'auto';
+        currentModalIndex = -1;
       }
     });
 
