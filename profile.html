@@ -99,6 +99,11 @@
             filter: brightness(1.05);
         }
 
+        .logout-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
         main {
             position: relative;
             z-index: 5;
@@ -425,6 +430,118 @@
             font-weight: 600;
         }
 
+        .activity-section {
+            margin-top: 80px;
+            background: rgba(18, 10, 34, 0.95);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 32px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+        }
+
+        .activity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 12px;
+        }
+
+        .activity-title {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+        }
+
+        .activity-subtitle {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .activity-table {
+            margin-top: 16px;
+            overflow-x: auto;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .activity-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .activity-table thead {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .activity-table th,
+        .activity-table td {
+            padding: 16px 20px;
+            font-size: 13px;
+            text-align: left;
+        }
+
+        .activity-table th {
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .activity-table td {
+            color: rgba(255, 255, 255, 0.85);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .activity-action {
+            font-weight: 700;
+            color: #FFB86C;
+            letter-spacing: 0.06em;
+        }
+
+        .activity-metadata {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .activity-table .col-date {
+            width: 220px;
+            font-weight: 600;
+        }
+
+        .activity-table .col-action {
+            width: 160px;
+            font-weight: 700;
+            color: #FFB86C;
+            letter-spacing: 0.05em;
+        }
+
+        .activity-table .col-other {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .activity-refresh {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #FFFFFF;
+            padding: 10px 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .activity-refresh:hover {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+        }
+
         .modal {
             position: fixed;
             inset: 0;
@@ -725,7 +842,7 @@
 
     <main>
         <div class="profile-header">
-            <button class="logout-btn" type="button" onclick="kliksyAuth.logout()">
+            <button id="logoutBtn" class="logout-btn" type="button" onclick="handleLogout()">
                 <i class="fas fa-sign-out-alt"></i>
                 Logout
             </button>
@@ -769,6 +886,10 @@
                 <i class="fas fa-lock"></i>
                 Private
             </div>
+            <div class="filter-tab" data-filter="activity">
+                <i class="fas fa-chart-line"></i>
+                My Activity
+            </div>
         </div>
 
         <p id="profileStatus" class="status-message" role="status" aria-live="polite"></p>
@@ -781,6 +902,32 @@
             <i class="fas fa-images"></i>
             <p>No memes found 😢</p>
         </div>
+
+        <section class="activity-section hidden">
+            <div class="activity-header">
+                <div>
+                    <h2 class="activity-title">My Activity</h2>
+                    <p class="activity-subtitle">Latest account events just for you</p>
+                </div>
+                <button id="activityRefreshBtn" class="activity-refresh" type="button">
+                    <i class="fas fa-sync-alt"></i>
+                    Refresh
+                </button>
+            </div>
+            <div id="activityStatus" class="status-message" style="text-align: left;"></div>
+            <div class="activity-table" aria-live="polite">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date / Time</th>
+                            <th>Action</th>
+                            <th>Other Data</th>
+                        </tr>
+                    </thead>
+                    <tbody id="activityTableBody"></tbody>
+                </table>
+            </div>
+        </section>
     </main>
 
     <div id="photoModal" class="modal hidden">
@@ -808,7 +955,9 @@
                     </button>
                 </div>
                 <p id="modalTimestamp" class="modal-timestamp"></p>
-                <h4 style="color: rgba(255, 255, 255, 0.8); font-weight: 700; font-size: 14px; margin-bottom: 12px; text-transform: uppercase;">Description</h4>
+                <h4
+                    style="color: rgba(255, 255, 255, 0.8); font-weight: 700; font-size: 14px; margin-bottom: 12px; text-transform: uppercase;">
+                    Description</h4>
                 <p id="modalDescription" class="modal-description"></p>
             </div>
         </div>
@@ -818,6 +967,7 @@
         const PROFILE_MEMES_ENDPOINT = 'https://hoev7s4i82.execute-api.us-east-1.amazonaws.com/profile/memes';
         const PROFILE_DELETE_ENDPOINT = 'https://hoev7s4i82.execute-api.us-east-1.amazonaws.com/delete';
         const PROFILE_CHANGE_PRIVACY_ENDPOINT = 'https://hoev7s4i82.execute-api.us-east-1.amazonaws.com/update-privacy';
+        const LOGS_ENDPOINT = 'https://hoev7s4i82.execute-api.us-east-1.amazonaws.com/logs-all';
         const PROFILE_PLACEHOLDER_IMAGE = 'https://via.placeholder.com/800x800/140a28/FFFFFF?text=KLIKSY';
 
         const filterTabs = document.querySelectorAll('.filter-tab');
@@ -825,11 +975,18 @@
         const emptyState = document.getElementById('emptyState');
         const profileStatus = document.getElementById('profileStatus');
         const paginationControls = document.getElementById('paginationControls');
+        const activityStatus = document.getElementById('activityStatus');
+        const activityTableBody = document.getElementById('activityTableBody');
+        const activityRefreshBtn = document.getElementById('activityRefreshBtn');
+        const activitySection = document.querySelector('.activity-section');
+        const logoutBtn = document.getElementById('logoutBtn');
 
         let currentCard = null;
         let isDeletingMeme = false;
         let currentModalIndex = -1;
         let visibleCards = [];
+        let isLoadingActivity = false;
+        let activityLogs = [];
         const profilePagination = {
             page: 1,
             totalPages: 1,
@@ -856,6 +1013,45 @@
                 profileStatus.classList.add(type);
             }
             profileStatus.style.display = message ? 'block' : 'none';
+        };
+
+        function handleLogout() {
+            if (!window.kliksyAuth || typeof window.kliksyAuth.logout !== 'function') {
+                return;
+            }
+            if (logoutBtn) {
+                if (logoutBtn.disabled) {
+                    return;
+                }
+                logoutBtn.disabled = true;
+                logoutBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging out';
+            }
+            try {
+                const result = window.kliksyAuth.logout();
+                if (result && typeof result.finally === 'function') {
+                    result.finally(() => {
+                        if (logoutBtn) {
+                            logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logging out';
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error('Logout error:', error);
+                if (logoutBtn) {
+                    logoutBtn.disabled = false;
+                    logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
+                }
+            }
+        }
+
+        const setActivityStatus = (message = '', type = '') => {
+            if (!activityStatus) return;
+            activityStatus.textContent = message;
+            activityStatus.classList.remove('error', 'success');
+            if (type) {
+                activityStatus.classList.add(type);
+            }
+            activityStatus.style.display = message ? 'block' : 'none';
         };
 
         const normalizeToUTCString = (value) => {
@@ -892,6 +1088,14 @@
             return PROFILE_PLACEHOLDER_IMAGE;
         };
 
+        const buildMetadataText = (metadata = {}, excludeKeys = []) => {
+            const excluded = new Set((excludeKeys || []).map((key) => String(key).toLowerCase()));
+            const entries = Object.entries(metadata)
+                .filter(([key, value]) => Boolean(value) && !excluded.has(String(key).toLowerCase()))
+                .map(([key, value]) => `${key}: ${value}`);
+            return entries.length ? entries.join(' • ') : 'No additional details';
+        };
+
         function buildMemeCard(meme) {
             const card = document.createElement('div');
             card.className = 'photo-card';
@@ -907,7 +1111,7 @@
 
             const imageContainer = document.createElement('div');
             imageContainer.className = 'photo-card-image-container';
-            
+
             const img = document.createElement('img');
             img.src = resolveMemeImage(meme);
             img.alt = meme.description || 'Kliksy meme';
@@ -947,6 +1151,46 @@
             return card;
         }
 
+        const buildActivityRow = (log) => {
+            const row = document.createElement('tr');
+
+            const timeCell = document.createElement('td');
+            timeCell.className = 'col-date';
+            timeCell.textContent = formatPhilippineDate(log.eventTimestamp);
+            row.appendChild(timeCell);
+
+            const actionCell = document.createElement('td');
+            actionCell.className = 'activity-action col-action';
+            actionCell.textContent = log.action || 'ACTION';
+            row.appendChild(actionCell);
+
+            const metadataCell = document.createElement('td');
+            metadataCell.className = 'activity-metadata col-other';
+            metadataCell.textContent = buildMetadataText(log.metadata || {}, ['email', 'username']);
+            row.appendChild(metadataCell);
+
+            return row;
+        };
+
+        const renderActivityLogs = (logs) => {
+            if (!activityTableBody) return;
+            activityTableBody.innerHTML = '';
+            if (!logs.length) {
+                const emptyRow = document.createElement('tr');
+                const cell = document.createElement('td');
+                cell.colSpan = 3;
+                cell.style.textAlign = 'center';
+                cell.style.color = 'rgba(255, 255, 255, 0.6)';
+                cell.textContent = 'No recent activity yet.';
+                emptyRow.appendChild(cell);
+                activityTableBody.appendChild(emptyRow);
+                return;
+            }
+            const fragment = document.createDocumentFragment();
+            logs.forEach((log) => fragment.appendChild(buildActivityRow(log)));
+            activityTableBody.appendChild(fragment);
+        };
+
         function renderProfileMemes(payload) {
             const items = payload?.items || [];
             photosGrid.innerHTML = '';
@@ -971,6 +1215,48 @@
 
             applyFilter(getActiveFilter());
             renderPaginationControls(payload?.pagination || {});
+        }
+
+        async function loadActivityLogs() {
+            if (isLoadingActivity) {
+                return;
+            }
+            const authUser = window.kliksyAuth?.user;
+            const userId = authUser?.id;
+            if (!userId) {
+                setActivityStatus('Unable to load activity: missing user id.', 'error');
+                renderActivityLogs([]);
+                return;
+            }
+
+            isLoadingActivity = true;
+            setActivityStatus('Loading recent activity…');
+            activityRefreshBtn && (activityRefreshBtn.disabled = true);
+
+            try {
+                const url = new URL(LOGS_ENDPOINT);
+                url.searchParams.set('userID', String(userId));
+
+                const response = await fetch(url.toString());
+                if (!response.ok) {
+                    throw new Error('Unable to load activity logs.');
+                }
+
+                const payload = await response.json().catch(() => []);
+                const logs = Array.isArray(payload) ? payload : (payload?.items || []);
+                activityLogs = logs;
+                renderActivityLogs(activityLogs);
+                setActivityStatus(activityLogs.length ? '' : 'No recent actions yet.');
+            } catch (error) {
+                console.error('Activity log error:', error);
+                setActivityStatus(error.message || 'Something went wrong while loading activity.', 'error');
+                renderActivityLogs([]);
+            } finally {
+                isLoadingActivity = false;
+                if (activityRefreshBtn) {
+                    activityRefreshBtn.disabled = false;
+                }
+            }
         }
 
         function renderPaginationControls(pagination = {}) {
@@ -1033,6 +1319,29 @@
         }
 
         function applyFilter(filter) {
+            const isActivityView = filter === 'activity';
+
+            if (activitySection) {
+                activitySection.classList.toggle('hidden', !isActivityView);
+            }
+
+            if (isActivityView) {
+                photosGrid.style.display = 'none';
+                if (paginationControls) {
+                    paginationControls.style.display = 'none';
+                }
+                emptyState.classList.add('hidden');
+                setProfileStatus('');
+                if (!activityLogs.length && !isLoadingActivity) {
+                    loadActivityLogs();
+                }
+                return;
+            }
+
+            if (paginationControls) {
+                paginationControls.style.display = '';
+            }
+
             const cards = photosGrid.querySelectorAll('.photo-card');
             let visibleCount = 0;
 
@@ -1098,13 +1407,13 @@
         function openModal(card) {
             currentCard = card;
             const modal = document.getElementById('photoModal');
-            
+
             // Get all visible cards
             visibleCards = Array.from(photosGrid.querySelectorAll('.photo-card')).filter(
                 c => c.style.display !== 'none'
             );
             currentModalIndex = visibleCards.indexOf(card);
-            
+
             updateModalContent(card);
             updateNavigationButtons();
             modal.classList.remove('hidden');
@@ -1129,16 +1438,16 @@
                 modalPrivacy.className = 'modal-privacy private';
                 modalPrivacy.innerHTML = '<i class="fas fa-lock"></i> Private';
             }
-            
+
             // Remove old click handler and add new one
             modalPrivacy.onclick = null;
-            modalPrivacy.onclick = () => togglePrivacy(card);
+            modalPrivacy.onclick = () => togglePrivacy(card, modalPrivacy);
         }
 
         function updateNavigationButtons() {
             const prevBtn = document.getElementById('modalPrevBtn');
             const nextBtn = document.getElementById('modalNextBtn');
-            
+
             if (prevBtn && nextBtn) {
                 prevBtn.disabled = currentModalIndex <= 0;
                 nextBtn.disabled = currentModalIndex >= visibleCards.length - 1;
@@ -1242,7 +1551,7 @@
             await handleDelete(cardToDelete);
         }
 
-        async function togglePrivacy(card) {
+        async function togglePrivacy(card, triggerButton = null) {
             if (!card) {
                 return;
             }
@@ -1262,6 +1571,13 @@
             const currentPrivacy = card.getAttribute('data-privacy');
             const newPrivacy = currentPrivacy === 'public' ? 'private' : 'public';
 
+            let triggerOriginalHTML = '';
+            if (triggerButton) {
+                triggerOriginalHTML = triggerButton.innerHTML;
+                triggerButton.disabled = true;
+                triggerButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
+            }
+
             const updatePayload = {
                 memeId: memeIdValue,
                 email: authUser.email,
@@ -1270,7 +1586,7 @@
 
             try {
                 setProfileStatus('Updating privacy...');
-                
+
                 const response = await fetch(PROFILE_CHANGE_PRIVACY_ENDPOINT, {
                     method: 'PATCH',
                     headers: {
@@ -1286,7 +1602,7 @@
 
                 // Update card privacy
                 card.setAttribute('data-privacy', newPrivacy);
-                
+
                 // Update privacy badge on card
                 const cardBadge = card.querySelector('.privacy-badge');
                 if (cardBadge) {
@@ -1301,7 +1617,11 @@
                     const isPublic = newPrivacy === 'public';
                     modalPrivacy.className = `modal-privacy ${isPublic ? 'public' : 'private'}`;
                     modalPrivacy.innerHTML = `<i class="fas ${isPublic ? 'fa-globe' : 'fa-lock'}"></i> ${isPublic ? 'Public' : 'Private'}`;
-                    modalPrivacy.onclick = () => togglePrivacy(card);
+                    modalPrivacy.onclick = () => togglePrivacy(card, modalPrivacy);
+                }
+
+                if (triggerButton) {
+                    triggerButton.disabled = false;
                 }
 
                 // Update stats
@@ -1313,21 +1633,26 @@
                 const toastMessage = document.getElementById('modalToastMessage');
                 toastMessage.textContent = 'Privacy updated successfully! 🎉';
                 toast.classList.add('show');
-                
+
                 // Hide toast after 3 seconds
                 setTimeout(() => {
                     toast.classList.remove('show');
                 }, 3000);
             } catch (error) {
                 console.error('Toggle privacy error:', error);
-                
+
                 // Show error toast in modal
                 const toast = document.getElementById('modalToast');
                 const toastMessage = document.getElementById('modalToastMessage');
                 toast.style.background = 'linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%)';
                 toastMessage.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + (error.message || 'Unable to update privacy.');
                 toast.classList.add('show');
-                
+
+                if (triggerButton) {
+                    triggerButton.disabled = false;
+                    triggerButton.innerHTML = triggerOriginalHTML || '<i class="fas fa-sign-out-alt"></i> Privacy';
+                }
+
                 setTimeout(() => {
                     toast.classList.remove('show');
                     toast.style.background = 'linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%)';
@@ -1353,6 +1678,12 @@
             });
         });
 
+        if (activityRefreshBtn) {
+            activityRefreshBtn.addEventListener('click', () => {
+                loadActivityLogs();
+            });
+        }
+
         document.getElementById('photoModal').addEventListener('click', function (event) {
             if (event.target === this) {
                 closePhotoModal();
@@ -1367,6 +1698,7 @@
 
         populateProfileHeader();
         loadProfileMemes();
+        loadActivityLogs();
     </script>
 </body>
 

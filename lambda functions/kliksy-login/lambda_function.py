@@ -1,7 +1,10 @@
 import json
 import os
 import base64
+from datetime import datetime, timezone
+
 import bcrypt
+import boto3
 import mysql.connector
 
 
@@ -13,27 +16,31 @@ DB_CONFIG = {
 	'port': int(os.environ.get('DB_PORT', '3306')),
 }
 
+LOG_TABLE = os.environ.get('LOG_TABLE') or os.environ.get('KLIKSY_LOG_TABLE') or 'KliksyLogs'
+
+dynamodb = boto3.resource('dynamodb')
+log_table = dynamodb.Table(LOG_TABLE)
+
 
 def _get_connection():
 	return mysql.connector.connect(**DB_CONFIG)
 
 
-def _log_activity(action: str, details: str) -> None:
+def _log_activity(user, action, metadata=None):
+	if not user:
+		return
 	try:
-		conn = _get_connection()
-		cursor = conn.cursor()
-		cursor.execute(
-			"INSERT INTO activity_logs (action, details) VALUES (%s, %s)",
-			(action, details),
-		)
-		conn.commit()
+		payload = {
+			'userID': str(user['id']),
+			'eventTimestamp': datetime.now(timezone.utc).isoformat(),
+			'globalKey': 'ALL',
+			'action': action,
+		}
+		if metadata:
+			payload['metadata'] = metadata
+		log_table.put_item(Item=payload)
 	except Exception as exc:  # noqa: BLE001
 		print(f"activity log failed: {exc}")
-	finally:
-		if 'cursor' in locals():
-			cursor.close()
-		if 'conn' in locals() and conn.is_connected():
-			conn.close()
 
 
 def _parse_body(event):
@@ -84,7 +91,14 @@ def lambda_handler(event, context):
 		if not bcrypt.checkpw(password.encode('utf-8'), stored_hash):
 			return _build_response(401, {'error': 'Invalid credentials'})
 
-		_log_activity('LOGIN', f"user logged in: {user['email']}")
+		_log_activity(
+			user,
+			'LOGIN',
+			{
+				'email': user['email'],
+				'username': user['username'],
+			},
+		)
 
 		return _build_response(200, {
 			'message': 'Login successful',

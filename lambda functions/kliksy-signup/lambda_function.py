@@ -1,7 +1,11 @@
+import base64
 import json
 import os
-import base64
+from datetime import datetime, timezone
+from typing import Optional
+
 import bcrypt
+import boto3
 import mysql.connector
 
 
@@ -12,28 +16,35 @@ DB_CONFIG = {
 	'database': os.environ.get('DB_NAME'),
 	'port': int(os.environ.get('DB_PORT', '3306')),
 }
+LOG_TABLE = os.environ.get('LOG_TABLE') or os.environ.get('KLIKSY_LOG_TABLE') or 'KliksyLogs'
+
+dynamodb = boto3.resource('dynamodb')
+log_table = dynamodb.Table(LOG_TABLE)
 
 
 def _get_connection():
 	return mysql.connector.connect(**DB_CONFIG)
 
 
-def _log_activity(action: str, details: str) -> None:
+def _log_activity(user_id: str, email: str, username: str, action: str, metadata: Optional[dict] = None) -> None:
+	if not user_id:
+		return
 	try:
-		conn = _get_connection()
-		cursor = conn.cursor()
-		cursor.execute(
-			"INSERT INTO activity_logs (action, details) VALUES (%s, %s)",
-			(action, details),
-		)
-		conn.commit()
+		payload = {
+			'userID': str(user_id),
+			'eventTimestamp': datetime.now(timezone.utc).isoformat(),
+			'globalKey': 'ALL',
+			'action': action,
+			'metadata': {
+				'email': email,
+				'username': username,
+			},
+		}
+		if metadata:
+			payload['metadata'].update(metadata)
+		log_table.put_item(Item=payload)
 	except Exception as exc:  # noqa: BLE001
 		print(f"activity log failed: {exc}")
-	finally:
-		if 'cursor' in locals():
-			cursor.close()
-		if 'conn' in locals() and conn.is_connected():
-			conn.close()
 
 
 def _hash_password(password: str) -> bytes:
@@ -87,7 +98,7 @@ def lambda_handler(event, context):
 		)
 		conn.commit()
 
-		_log_activity('SIGNUP', f'user created: {email}')
+		_log_activity(cursor.lastrowid, email, username, 'SIGNUP')
 		return _build_response(201, {'message': 'User created successfully'})
 
 	except Exception as exc:  # noqa: BLE001

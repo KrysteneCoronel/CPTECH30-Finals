@@ -2,6 +2,8 @@ import base64
 import json
 import os
 import uuid
+from datetime import datetime, timezone
+from typing import Optional
 
 import boto3
 import mysql.connector
@@ -16,29 +18,35 @@ DB_CONFIG = {
 }
 UPLOAD_BUCKET = os.environ.get('UPLOAD_BUCKET')
 MAX_FILE_BYTES = int(os.environ.get('MAX_FILE_BYTES', str(10 * 1024 * 1024)))  # default 10 MB
+LOG_TABLE = os.environ.get('LOG_TABLE') or os.environ.get('KLIKSY_LOG_TABLE') or 'KliksyLogs'
 
 s3_client = boto3.client('s3')
+dynamodb = boto3.resource('dynamodb')
+log_table = dynamodb.Table(LOG_TABLE)
 
 def _get_connection():
 	return mysql.connector.connect(**DB_CONFIG)
 
 
-def _log_activity(action: str, details: str) -> None:
+def _log_activity(user: dict, action: str, metadata: Optional[dict] = None) -> None:
+	if not user:
+		return
 	try:
-		conn = _get_connection()
-		cursor = conn.cursor()
-		cursor.execute(
-			"INSERT INTO activity_logs (action, details) VALUES (%s, %s)",
-			(action, details),
-		)
-		conn.commit()
+		payload = {
+			'userID': str(user['id']),
+			'eventTimestamp': datetime.now(timezone.utc).isoformat(),
+			'globalKey': 'ALL',
+			'action': action,
+			'metadata': {
+				'email': user.get('email'),
+				'username': user.get('username'),
+			},
+		}
+		if metadata:
+			payload['metadata'].update(metadata)
+		log_table.put_item(Item=payload)
 	except Exception as exc:  # noqa: BLE001
 		print(f"activity log failed: {exc}")
-	finally:
-		if 'cursor' in locals():
-			cursor.close()
-		if 'conn' in locals() and conn.is_connected():
-			conn.close()
 
 
 def _parse_body(event):
@@ -141,7 +149,17 @@ def lambda_handler(event, context):
 		)
 		conn.commit()
 
-		_log_activity('UPLOAD', f"user uploaded file: {user['email']} - {s3_key}")
+		_log_activity(
+			user,
+			'UPLOAD',
+			{
+				's3Key': s3_key,
+				'description': description,
+				'privacy': privacy,
+				'fileType': content_type,
+				'fileSizeBytes': file_size_bytes or len(file_bytes),
+			},
+		)
 
 		file_url = f"https://{UPLOAD_BUCKET}.s3.amazonaws.com/{s3_key}"
 
