@@ -16,9 +16,11 @@ DB_CONFIG = {
 	'port': int(os.environ.get('DB_PORT', '3306')),
 }
 LOG_TABLE = os.environ.get('LOG_TABLE') or os.environ.get('KLIKSY_LOG_TABLE') or 'KliksyLogs'
+UPLOAD_BUCKET = os.environ.get('UPLOAD_BUCKET')
 
 dynamodb = boto3.resource('dynamodb')
 log_table = dynamodb.Table(LOG_TABLE)
+s3_client = boto3.client('s3')
 
 
 def _get_connection():
@@ -44,6 +46,17 @@ def _log_activity(user: dict, action: str, metadata: Optional[dict] = None) -> N
 		log_table.put_item(Item=payload)
 	except Exception as exc:  # noqa: BLE001
 		print(f"activity log failed: {exc}")
+
+
+def _delete_from_s3(key: Optional[str]) -> bool:
+	if not (UPLOAD_BUCKET and key):
+		return False
+	try:
+		s3_client.delete_object(Bucket=UPLOAD_BUCKET, Key=key)
+		return True
+	except Exception as exc:  # noqa: BLE001
+		print(f"s3 delete failed for {key}: {exc}")
+		return False
 
 
 def _build_response(status_code: int, payload: dict):
@@ -147,11 +160,16 @@ def lambda_handler(event, _context):
 		if not meme:
 			return _build_response(404, {'error': 'Meme not found for user'})
 
+		deleted_from_s3 = False
+
 		cursor.execute(
 			"DELETE FROM memes WHERE id=%s AND user_id=%s",
 			(meme_id, user['id']),
 		)
 		conn.commit()
+
+		if meme.get('s3_key'):
+			deleted_from_s3 = _delete_from_s3(meme['s3_key'])
 
 		_log_activity(
 			user,
@@ -159,12 +177,14 @@ def lambda_handler(event, _context):
 			{
 				'memeId': meme_id,
 				's3Key': meme.get('s3_key'),
+				's3Deleted': deleted_from_s3,
 			},
 		)
 
 		payload = {
 			'message': 'Meme deleted successfully',
 			'memeId': meme_id,
+			's3Deleted': deleted_from_s3,
 		}
 		if meme.get('s3_key'):
 			payload['s3Key'] = meme['s3_key']
